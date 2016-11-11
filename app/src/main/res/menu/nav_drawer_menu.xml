@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+            android:id="@+id/menu_view"
+            android:checkableBehavior="single">
+        <item
+                android:id="@+id/nav_devices"
+                android:icon="@drawable/ic_home"
+                android:title="Devices"/>
+        <item
+                android:id="@+id/nav_sensors"
+                android:icon="@drawable/ic_eye"
+                android:title="Sensors"/>
+    </group>
+
+    <group
+            android:id="@+id/menu_control"
+            android:checkableBehavior="none">
+            <item
+                    android:id="@+id/nav_control_device"
+                    android:icon="@drawable/ic_remote"
+                    android:title="Control Device"/>
+            <item
+                    android:id="@+id/nav_add_command"
+                    android:icon="@drawable/ic_command"
+                    android:title="Add Command"/>
+    </group>
+
+    <group
+            android:id="@+id/menu_settings"
+            android:checkableBehavior="none">
+            <item
+                    android:id="@+id/nav_manage_group"
+                    android:icon="@drawable/ic_group"
+                    android:title="Manage Group"/>
+            <item
+                    android:id="@+id/nav_settings"
+                    android:icon="@drawable/ic_settings"
+                    android:title="Settings"/>
+    </group>
+
+</menu>
