@@ -2,13 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="company.whitespace.smartifyandroid.fragment.HomeFragment">
+    tools:context=".fragment.SensorsFragment">
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:alpha="0.3"
-        android:src="@drawable/ic_home_black_24dp" />
+        android:src="@drawable/ic_photo_library_black_24dp" />
 
 </FrameLayout>

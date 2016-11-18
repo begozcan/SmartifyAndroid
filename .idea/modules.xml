@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SmartifyAndroid-2.iml" filepath="$PROJECT_DIR$/.idea/modules/SmartifyAndroid-2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SmartifyAndroid.iml" filepath="$PROJECT_DIR$/.idea/modules/SmartifyAndroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" />
     </modules>
   </component>

@@ -1,6 +1,5 @@
 package company.whitespace.smartifyandroid.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -24,11 +23,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import company.whitespace.smartifyandroid.R;
-import company.whitespace.smartifyandroid.fragment.HomeFragment;
-import company.whitespace.smartifyandroid.fragment.MoviesFragment;
-import company.whitespace.smartifyandroid.fragment.NotificationsFragment;
-import company.whitespace.smartifyandroid.fragment.PhotosFragment;
-import company.whitespace.smartifyandroid.fragment.SettingsFragment;
+import company.whitespace.smartifyandroid.fragment.*;
+import company.whitespace.smartifyandroid.fragment.DevicesFragment;
 import company.whitespace.smartifyandroid.other.CircleTransform;
 
 public class MainActivity extends AppCompatActivity {
@@ -187,27 +183,32 @@ public class MainActivity extends AppCompatActivity {
         switch (navItemIndex) {
             case 0:
                 // home
-                HomeFragment homeFragment = new HomeFragment();
-                return homeFragment;
+                DevicesFragment devicesFragment = new DevicesFragment();
+                return devicesFragment;
             case 1:
                 // photos
-                PhotosFragment photosFragment = new PhotosFragment();
-                return photosFragment;
+                SensorsFragment sensorsFragment = new SensorsFragment();
+                return sensorsFragment;
             case 2:
                 // movies fragment
-                MoviesFragment moviesFragment = new MoviesFragment();
-                return moviesFragment;
+                ControlDeviceFragment controlDeviceFragment = new ControlDeviceFragment();
+                return controlDeviceFragment;
             case 3:
                 // notifications fragment
-                NotificationsFragment notificationsFragment = new NotificationsFragment();
-                return notificationsFragment;
+                AddCommandFragment addCommandFragment = new AddCommandFragment();
+                return addCommandFragment;
 
             case 4:
+                // settings fragment
+                ManageGroupFragment manageGroupFragment = new ManageGroupFragment();
+                return manageGroupFragment;
+
+            case 5:
                 // settings fragment
                 SettingsFragment settingsFragment = new SettingsFragment();
                 return settingsFragment;
             default:
-                return new HomeFragment();
+                return new DevicesFragment();
         }
     }
 
