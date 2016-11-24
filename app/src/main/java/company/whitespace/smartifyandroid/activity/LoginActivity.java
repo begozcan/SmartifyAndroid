@@ -1,33 +1,55 @@
 package company.whitespace.smartifyandroid.activity;
 
-        import android.app.ProgressDialog;
-        import android.os.Bundle;
-        import android.support.v7.app.AppCompatActivity;
-        import android.util.Log;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
-        import android.content.Intent;
-        import android.view.View;
-        import android.widget.Button;
-        import android.widget.EditText;
-        import android.widget.TextView;
-        import android.widget.Toast;
+import android.content.Intent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-        import butterknife.ButterKnife;
-        import butterknife.Bind;
-        import company.whitespace.smartifyandroid.R;
+import butterknife.ButterKnife;
+import butterknife.Bind;
+import company.whitespace.smartifyandroid.R;
+import company.whitespace.smartifyandroid.networking.LoginAsyncTask;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.concurrent.ExecutionException;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
-    @Bind(R.id.input_email) EditText _emailText;
-    @Bind(R.id.input_password) EditText _passwordText;
-    @Bind(R.id.btn_login) Button _loginButton;
-    @Bind(R.id.link_signup) TextView _signupLink;
+    @Bind(R.id.input_email)
+    EditText _emailText;
+    @Bind(R.id.input_password)
+    EditText _passwordText;
+    @Bind(R.id.btn_login)
+    Button _loginButton;
+    @Bind(R.id.link_signup)
+    TextView _signupLink;
+
+    public void setUserInformation(JSONObject userInformation) {
+        this.userInformation = userInformation;
+    }
+
+    private JSONObject userInformation;
+    private ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        checkLogin();
+
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
@@ -55,6 +77,8 @@ public class LoginActivity extends AppCompatActivity {
     public void login() {
         Log.d(TAG, "Login");
 
+        hideKeyboard();
+
         if (!validate()) {
             onLoginFailed();
             return;
@@ -62,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
 
         _loginButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this, R.style.AppTheme_Dark_Dialog);
+        progressDialog = new ProgressDialog(LoginActivity.this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
@@ -70,17 +94,12 @@ public class LoginActivity extends AppCompatActivity {
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
-        // TODO: Implement your own authentication logic here.
+        new LoginAsyncTask(LoginActivity.this).execute(email, password);
+    }
 
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        // onLoginFailed();
-                        progressDialog.dismiss();
-                    }
-                }, 3000);
+    public void dismissAuthenticationDialog() {
+        progressDialog.dismiss();
+        progressDialog = null;
     }
 
 
@@ -103,9 +122,19 @@ public class LoginActivity extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
+    @Override
+    protected void onDestroy() {
+        if (progressDialog != null)
+            progressDialog.dismiss();
+        super.onDestroy();
+    }
+
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
-        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        //finish();
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     public void onLoginFailed() {
@@ -127,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
             _emailText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
+        if (password.isEmpty() || password.length() < 4) {
             _passwordText.setError("between 4 and 10 alphanumeric characters");
             valid = false;
         } else {
@@ -135,5 +164,27 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return valid;
+    }
+
+    private void checkLogin() {
+
+        // TODO Fix This
+
+        SharedPreferences networking = getSharedPreferences(getString(R.string.networking_shared_preferences), Context.MODE_PRIVATE);
+        if (!networking.getString("session", "").equals("")) {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            //finish();
+            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+        }
+    }
+
+    public void hideKeyboard() {
+        try {
+            InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        } catch (Exception e) {
+            Log.e("KeyBoardUtil", e.toString(), e);
+        }
     }
 }
