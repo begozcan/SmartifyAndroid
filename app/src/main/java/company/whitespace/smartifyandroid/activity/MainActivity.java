@@ -316,7 +316,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        super.onBackPressed();
+        //super.onBackPressed();
     }
 
     @Override

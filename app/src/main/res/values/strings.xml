@@ -1,4 +1,7 @@
 <resources>
+    <string name="domain">http://139.179.205.194:5000/</string>
+    <string name="networking_shared_preferences">networking</string>
+
     <string name="app_name">Smartify</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
