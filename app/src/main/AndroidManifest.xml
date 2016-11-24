@@ -20,12 +20,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="company.whitespace.smartifyandroid.activity.AboutUsActivity"
-            android:label="@string/activity_title_about_us" />
-        <activity
-            android:name="company.whitespace.smartifyandroid.activity.PrivacyPolicyActivity"
-            android:label="@string/activity_title_privacy_policy" />
     </application>
 
 </manifest>
