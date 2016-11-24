@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     // urls to load navigation header background image
     // and profile image
-    private static final String urlProfileImg = "http://www.white-space.company/begum.jpg";
+    // private static final String urlProfileImg = "http://www.white-space.company/begum.jpg";
 
     // index to identify current nav menu item
     public static int navItemIndex = 0;
@@ -60,10 +60,15 @@ public class MainActivity extends AppCompatActivity {
     private boolean shouldLoadHomeFragOnBackPress = true;
     private Handler mHandler;
 
+    private String username, userEmail;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle bundle = getIntent().getExtras();
+        username = bundle.getString("name") + " " + bundle.getString("surname");
+        userEmail = bundle.getString("email");
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -78,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         navHeader = navigationView.getHeaderView(0);
         txtName = (TextView) navHeader.findViewById(R.id.name);
         txtWebsite = (TextView) navHeader.findViewById(R.id.website);
-        imgProfile = (ImageView) navHeader.findViewById(R.id.img_profile);
+        //imgProfile = (ImageView) navHeader.findViewById(R.id.img_profile);
 
         // load toolbar titles from string resources
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
@@ -111,16 +116,16 @@ public class MainActivity extends AppCompatActivity {
      */
     private void loadNavHeader() {
         // name, website
-        txtName.setText("Begüm Özcan");
-        txtWebsite.setText("begumozcan95@gmail.com");
+        txtName.setText(username);
+        txtWebsite.setText(userEmail);
 
         // Loading profile image
-        Glide.with(this).load(urlProfileImg)
-                .crossFade()
-                .thumbnail(0.5f)
-                .bitmapTransform(new CircleTransform(this))
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imgProfile);
+//        Glide.with(this).load(urlProfileImg)
+//                .crossFade()
+//                .thumbnail(0.5f)
+//                .bitmapTransform(new CircleTransform(this))
+//                .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .into(imgProfile);
 
         // showing dot next to notifications label
         // navigationView.getMenu().getItem(1).setActionView(R.layout.menu_dot);

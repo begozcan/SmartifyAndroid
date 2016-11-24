@@ -46,9 +46,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initiliazed = false;
-        checkLogin();
-        initiliazed = true;
+//        initiliazed = false;
+//        checkLogin();
+//        initiliazed = true;
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
