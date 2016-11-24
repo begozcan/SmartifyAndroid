@@ -40,8 +40,6 @@ public class LoginAsyncTask extends AsyncTask<String, Void, Boolean> {
                     .param("password", strings[1])
                     .ensureSuccess().asJsonObject().getBody();
 
-            Log.i("Networking Check", result.toString());
-
             if (result.length() == 0)
                 return false;
 

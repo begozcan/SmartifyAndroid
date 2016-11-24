@@ -20,6 +20,7 @@ import butterknife.Bind;
 import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.networking.LoginAsyncTask;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
@@ -27,6 +28,7 @@ import java.util.concurrent.ExecutionException;
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
+    private boolean initiliazed;
 
     @Bind(R.id.input_email)
     EditText _emailText;
@@ -47,9 +49,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        initiliazed = false;
         checkLogin();
-
+        initiliazed = true;
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
@@ -130,17 +132,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginSuccess() {
-        _loginButton.setEnabled(true);
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
-        //finish();
-        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+        if (initiliazed)
+            _loginButton.setEnabled(true);
+        startMainActivity();
     }
 
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
 
-        _loginButton.setEnabled(true);
+        if (initiliazed)
+            _loginButton.setEnabled(true);
     }
 
     public boolean validate() {
@@ -172,10 +173,7 @@ public class LoginActivity extends AppCompatActivity {
 
         SharedPreferences networking = getSharedPreferences(getString(R.string.networking_shared_preferences), Context.MODE_PRIVATE);
         if (!networking.getString("session", "").equals("")) {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-            //finish();
-            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+            startMainActivity();
         }
     }
 
@@ -185,6 +183,22 @@ public class LoginActivity extends AppCompatActivity {
             inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         } catch (Exception e) {
             Log.e("KeyBoardUtil", e.toString(), e);
+        }
+    }
+
+    private void startMainActivity() {
+        try {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+
+            intent.putExtra("name", userInformation.getString("name"));
+            intent.putExtra("surname", userInformation.getString("surname"));
+            intent.putExtra("email", userInformation.getString("email"));
+
+            startActivity(intent);
+            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(getBaseContext(), "Fatal error!", Toast.LENGTH_LONG).show();
         }
     }
 }
