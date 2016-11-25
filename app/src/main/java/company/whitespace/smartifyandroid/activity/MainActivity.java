@@ -1,5 +1,7 @@
 package company.whitespace.smartifyandroid.activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -66,9 +68,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle bundle = getIntent().getExtras();
-        username = bundle.getString("name") + " " + bundle.getString("surname");
-        userEmail = bundle.getString("email");
+
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.networking_shared_preferences), Context.MODE_PRIVATE);
+
+        username = sharedPreferences.getString("name", "FATAL") + " " + sharedPreferences.getString("surname", "ERROR");
+        userEmail = sharedPreferences.getString("email", "FATAL@ERROR.com");
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
