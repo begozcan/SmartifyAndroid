@@ -3,7 +3,9 @@ package company.whitespace.smartifyandroid.networking;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.Pair;
 import com.goebl.david.Request;
 import com.goebl.david.Webb;
@@ -33,18 +35,19 @@ public abstract class NetworkingAsyncTask extends AsyncTask<Pair<String, String>
 
     @Override
     protected Void doInBackground(Pair<String, String>... pairs) {
+
         SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.networking_shared_preferences), Context.MODE_PRIVATE);
         String session = sharedPreferences.getString("session", "");
         if (session.equals(""))
             onSessionFail();
 
-        Request request = webb.post(context.getString(R.string.domain) + '/' + requestLink);
-        for (Pair<String, String> pair : pairs
-                ) {
-            request = request.param(pair.first, pair.second);
+        Request request = webb.post(context.getString(R.string.domain) + requestLink);
+        for (Pair<String, String> pair : pairs) {
+            request.param(pair.first, pair.second);
+            Log.i("Pair", pair.first + pair.second);
         }
-        result = request.ensureSuccess().asString().getBody();
-        if (result.contentEquals("Session Expired")) {
+        result = request.asString().getBody();
+        if (result == null || result.contentEquals("Session Expired")) {
             onSessionFail();
         } else {
             onSuccess();
