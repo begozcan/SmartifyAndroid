@@ -1,6 +1,8 @@
 package company.whitespace.smartifyandroid.activity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +29,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.fragment.*;
 import company.whitespace.smartifyandroid.fragment.DevicesFragment;
+import company.whitespace.smartifyandroid.networking.NetworkingAsyncTask;
 import company.whitespace.smartifyandroid.other.CircleTransform;
 
 public class MainActivity extends AppCompatActivity {
@@ -64,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String username, userEmail;
 
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +115,13 @@ public class MainActivity extends AppCompatActivity {
             CURRENT_TAG = TAG_DEVICES;
             loadHomeFragment();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (progressDialog != null)
+            progressDialog.dismiss();
+        super.onDestroy();
     }
 
     /***
@@ -353,7 +364,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-            Toast.makeText(getApplicationContext(), "Logout user!", Toast.LENGTH_LONG).show();
+            new LogoutAsyncTask().execute();
             return true;
         }
 
@@ -378,5 +389,47 @@ public class MainActivity extends AppCompatActivity {
             fab.show();
         else
             fab.hide();
+    }
+
+    private class LogoutAsyncTask extends NetworkingAsyncTask {
+
+        public LogoutAsyncTask() {
+            super(MainActivity.this, "logout");
+        }
+
+        @Override
+        public void onSessionFail() {
+            onSuccess();
+        }
+
+        @Override
+        public void onSuccess() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    progressDialog = new ProgressDialog(MainActivity.this, R.style.AppTheme_Dark_Dialog);
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.setMessage("Logging Out");
+                    progressDialog.show();
+                }
+            });
+            SharedPreferences.Editor editor = context.getSharedPreferences(
+                    context.getString(R.string.networking_shared_preferences), Context.MODE_PRIVATE).edit();
+
+            editor.putString("session", "");
+            editor.putString("name", "");
+            editor.putString("surname", "");
+            editor.putString("email", "");
+            editor.apply();
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getApplicationContext(), "Logged out!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 }

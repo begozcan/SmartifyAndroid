@@ -21,7 +21,7 @@ import java.net.CookiePolicy;
  * Created by Alchemistake on 24/11/2016.
  */
 public abstract class NetworkingAsyncTask extends AsyncTask<Pair<String, String>, Void, Void> {
-    Context context;
+    public Context context;
     Webb webb;
     String requestLink;
     String result;
