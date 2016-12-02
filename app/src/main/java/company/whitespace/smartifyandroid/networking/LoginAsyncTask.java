@@ -1,6 +1,7 @@
 package company.whitespace.smartifyandroid.networking;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.goebl.david.Webb;
@@ -49,8 +50,14 @@ public class LoginAsyncTask extends AsyncTask<String, Void, Boolean> {
             JsonElement jsonElement = gson.toJsonTree(manager.getCookieStore());
             jsonElement.getAsJsonObject().remove("lock");
 
-            loginActivity.getSharedPreferences(loginActivity.getString(R.string.networking_shared_preferences), Context.MODE_PRIVATE)
-                    .edit().putString("session", gson.toJson(jsonElement)).apply();
+            SharedPreferences.Editor editor = loginActivity.getSharedPreferences(
+                    loginActivity.getString(R.string.networking_shared_preferences), Context.MODE_PRIVATE).edit();
+
+            editor.putString("session", gson.toJson(jsonElement));
+            editor.putString("name", result.getString("name"));
+            editor.putString("surname", result.getString("surname"));
+            editor.putString("email", result.getString("email"));
+            editor.apply();
         } catch (Exception e) {
             return false;
         }
