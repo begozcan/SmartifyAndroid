@@ -1,5 +1,5 @@
 <resources>
-    <string name="domain">http://139.179.55.85:5000/</string>
+    <string name="domain">http://35.164.51.239/</string>
     <string name="networking_shared_preferences">networking</string>
 
     <string name="app_name">Smartify</string>

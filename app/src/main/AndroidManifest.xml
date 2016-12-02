@@ -18,17 +18,29 @@
         <activity
                 android:name=".activity.LoginActivity"
                 android:theme="@style/AppTheme.Dark">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity
+                android:name=".activity.SignupActivity"
+                android:theme="@style/AppTheme.Dark">
+        </activity>
+        <activity
+                android:name=".activity.ForgotPasswordActivity"
+                android:theme="@style/AppTheme.Dark">
+        </activity>
+        <activity android:name=".activity.ConfirmSignupActivity"
+                  android:theme="@style/AppTheme.Dark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-                android:name=".activity.SignupActivity"
-                android:theme="@style/AppTheme.Dark">
-        </activity>
-        <activity android:name=".activity.ForgotPasswordActivity"
+        <activity android:name=".activity.NewPasswordActivity"
                   android:theme="@style/AppTheme.Dark">
         </activity>
     </application>
