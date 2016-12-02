@@ -69,7 +69,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     public void onSubmitSuccess() {
         _submitButton.setEnabled(true);
         // TODO: Change this
-        startActivity(new Intent(ForgotPasswordActivity.this, MainActivity.class));
+        startActivity(new Intent(ForgotPasswordActivity.this, NewPasswordActivity.class));
     }
 
     public void onSubmitFailed() {

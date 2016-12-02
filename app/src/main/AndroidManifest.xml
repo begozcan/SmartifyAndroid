@@ -18,11 +18,11 @@
         <activity
                 android:name=".activity.LoginActivity"
                 android:theme="@style/AppTheme.Dark">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity
                 android:name=".activity.SignupActivity"
@@ -34,11 +34,6 @@
         </activity>
         <activity android:name=".activity.ConfirmSignupActivity"
                   android:theme="@style/AppTheme.Dark">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity android:name=".activity.NewPasswordActivity"
                   android:theme="@style/AppTheme.Dark">

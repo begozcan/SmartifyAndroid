@@ -20,12 +20,11 @@ public class ConfirmSignupActivity extends AppCompatActivity {
 
     private static final String TAG = "ConfirmSignupActivity";
 
-    @Bind(R.id.input_email)
-    EditText _emailText;
-    @Bind(R.id.input_conf_code)
-    EditText _confCode;
-    @Bind(R.id.btn_submit)
-    Button _submitButton;
+    @Bind(R.id.input_email) EditText _emailText;
+    @Bind(R.id.input_conf_code) EditText _confCode;
+    @Bind(R.id.btn_submit) Button _submitButton;
+
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +50,7 @@ public class ConfirmSignupActivity extends AppCompatActivity {
 
         _submitButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(ConfirmSignupActivity.this, R.style.AppTheme_Dark_Dialog);
+        progressDialog = new ProgressDialog(ConfirmSignupActivity.this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Submitting...");
         progressDialog.show();
@@ -65,13 +64,21 @@ public class ConfirmSignupActivity extends AppCompatActivity {
 
     public void onSubmitSuccess() {
         _submitButton.setEnabled(true);
-        startActivity(new Intent(ConfirmSignupActivity.this, MainActivity.class));
+        startActivity(new Intent(ConfirmSignupActivity.this, LoginActivity.class));
     }
 
     public void onSubmitFailed() {
         Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_LONG).show();
-
+        if(progressDialog != null)
+            progressDialog.dismiss();
         _submitButton.setEnabled(true);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(progressDialog != null)
+            progressDialog.dismiss();
+        super.onDestroy();
     }
 
     public boolean validate() {
