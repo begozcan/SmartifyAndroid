@@ -23,16 +23,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
 import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.fragment.*;
-import company.whitespace.smartifyandroid.fragment.DevicesFragment;
+import company.whitespace.smartifyandroid.model.Device;
 import company.whitespace.smartifyandroid.networking.NetworkingAsyncTask;
-import company.whitespace.smartifyandroid.other.CircleTransform;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DevicesFragment.OnListFragmentInteractionListener {
 
     private NavigationView navigationView;
     private DrawerLayout drawer;
@@ -389,6 +385,11 @@ public class MainActivity extends AppCompatActivity {
             fab.show();
         else
             fab.hide();
+    }
+
+    @Override
+    public void onListFragmentInteraction(Device device) {
+
     }
 
     private class LogoutAsyncTask extends NetworkingAsyncTask {
