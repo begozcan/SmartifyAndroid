@@ -11,4 +11,4 @@
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
         tools:context="company.whitespace.smartifyandroid.fragment.DeviceFragment"
-        tools:listitem="@layout/fragment_device"/>
+        tools:listitem="@layout/item_device"/>

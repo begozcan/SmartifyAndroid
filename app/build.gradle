@@ -41,6 +41,9 @@ dependencies {
     // ButterKnife Library
     compile 'com.jakewharton:butterknife:7.0.1'
 
+    //SwipeMenu Library
+    compile 'com.tubb.smrv:swipemenu-recyclerview:5.4.0'
+
 }
 
 
