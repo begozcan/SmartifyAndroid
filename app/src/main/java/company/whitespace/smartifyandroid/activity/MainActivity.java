@@ -23,16 +23,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
 import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.fragment.*;
-import company.whitespace.smartifyandroid.fragment.DevicesFragment;
+import company.whitespace.smartifyandroid.fragment.dummy.DummyContent;
 import company.whitespace.smartifyandroid.networking.NetworkingAsyncTask;
-import company.whitespace.smartifyandroid.other.CircleTransform;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DeviceFragment.OnListFragmentInteractionListener {
 
     private NavigationView navigationView;
     private DrawerLayout drawer;
@@ -203,8 +199,8 @@ public class MainActivity extends AppCompatActivity {
         switch (navItemIndex) {
             case 0:
                 // home
-                DevicesFragment devicesFragment = new DevicesFragment();
-                return devicesFragment;
+                DeviceFragment deviceFragment = new DeviceFragment();
+                return deviceFragment;
             case 1:
                 // photos
                 SensorsFragment sensorsFragment = new SensorsFragment();
@@ -228,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                 SettingsFragment settingsFragment = new SettingsFragment();
                 return settingsFragment;
             default:
-                return new DevicesFragment();
+                return new DeviceFragment();
         }
     }
 
@@ -389,6 +385,11 @@ public class MainActivity extends AppCompatActivity {
             fab.show();
         else
             fab.hide();
+    }
+
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+
     }
 
     private class LogoutAsyncTask extends NetworkingAsyncTask {
