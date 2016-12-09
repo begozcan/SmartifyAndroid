@@ -25,10 +25,10 @@ import android.widget.Toast;
 
 import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.fragment.*;
-import company.whitespace.smartifyandroid.fragment.dummy.DummyContent;
+import company.whitespace.smartifyandroid.model.Device;
 import company.whitespace.smartifyandroid.networking.NetworkingAsyncTask;
 
-public class MainActivity extends AppCompatActivity implements DeviceFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements DevicesFragment.OnListFragmentInteractionListener {
 
     private NavigationView navigationView;
     private DrawerLayout drawer;
@@ -199,8 +199,8 @@ public class MainActivity extends AppCompatActivity implements DeviceFragment.On
         switch (navItemIndex) {
             case 0:
                 // home
-                DeviceFragment deviceFragment = new DeviceFragment();
-                return deviceFragment;
+                DevicesFragment devicesFragment = new DevicesFragment();
+                return devicesFragment;
             case 1:
                 // photos
                 SensorsFragment sensorsFragment = new SensorsFragment();
@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements DeviceFragment.On
                 SettingsFragment settingsFragment = new SettingsFragment();
                 return settingsFragment;
             default:
-                return new DeviceFragment();
+                return new DevicesFragment();
         }
     }
 
@@ -388,7 +388,7 @@ public class MainActivity extends AppCompatActivity implements DeviceFragment.On
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(Device device) {
 
     }
 

@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 import company.whitespace.smartifyandroid.R;
-import company.whitespace.smartifyandroid.fragment.DeviceFragment.OnListFragmentInteractionListener;
-import company.whitespace.smartifyandroid.fragment.dummy.DummyContent.DummyItem;
+import company.whitespace.smartifyandroid.fragment.DevicesFragment.OnListFragmentInteractionListener;
+import company.whitespace.smartifyandroid.model.Device;
 
 import java.util.List;
 
@@ -21,11 +21,11 @@ import java.util.List;
  */
 public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<Device> mDevices;
     private final OnListFragmentInteractionListener mListener;
 
-    public DevicesViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
+    public DevicesViewAdapter(List<Device> devices, OnListFragmentInteractionListener listener) {
+        mDevices = devices;
         mListener = listener;
     }
 
@@ -38,9 +38,9 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.itemID.setText(mValues.get(position).id);
-        holder.itemName.setText(mValues.get(position).content);
+        holder.mItem = mDevices.get(position);
+        holder.deviceName.setText(mDevices.get(position).getName());
+        holder.deviceRoom.setText(mDevices.get(position).getRoom());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,15 +83,15 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mDevices.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public DummyItem mItem;
+        public Device mItem;
 
-        TextView itemID;
-        TextView itemName;
+        TextView deviceName;
+        TextView deviceRoom;
 
         View btnOpen;
         View btnDelete;
@@ -101,8 +101,8 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
         public ViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
-            itemID = (TextView) itemView.findViewById(R.id.id);
-            itemName = (TextView) itemView.findViewById(R.id.content);
+            deviceName = (TextView) itemView.findViewById(R.id.device_name);
+            deviceRoom = (TextView) itemView.findViewById(R.id.device_room);
 
             btnOpen = itemView.findViewById(R.id.btOpen);
             btnDelete = itemView.findViewById(R.id.btDelete);
@@ -112,7 +112,7 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
 
         @Override
         public String toString() {
-            return super.toString() + " '" + itemName.getText() + "'";
+            return super.toString() + " '" + deviceName.getText() + "'";
         }
 
     }

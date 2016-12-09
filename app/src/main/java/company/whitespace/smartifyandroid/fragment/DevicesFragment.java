@@ -3,6 +3,7 @@ package company.whitespace.smartifyandroid.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import company.whitespace.smartifyandroid.R;
-import company.whitespace.smartifyandroid.fragment.dummy.DummyContent;
-import company.whitespace.smartifyandroid.fragment.dummy.DummyContent.DummyItem;
+import company.whitespace.smartifyandroid.model.Device;
 import company.whitespace.smartifyandroid.other.DevicesViewAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -20,25 +23,26 @@ import company.whitespace.smartifyandroid.other.DevicesViewAdapter;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class DeviceFragment extends Fragment {
+public class DevicesFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
+    private List<Device> devices = new ArrayList<Device>();
     private OnListFragmentInteractionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public DeviceFragment() {
+    public DevicesFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static DeviceFragment newInstance(int columnCount) {
-        DeviceFragment fragment = new DeviceFragment();
+    public static DevicesFragment newInstance(int columnCount) {
+        DevicesFragment fragment = new DevicesFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -52,25 +56,41 @@ public class DeviceFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+
+        // TODO: Replace with real values
+        devices.add(new Device("Reading Lamp", "Living Room"));
+        devices.add(new Device("AC", "Living Room"));
+        devices.add(new Device("TV", "Living Room"));
+        devices.add(new Device("Computer", "Study Room"));
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_device_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
+
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
+            }
+            else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
 
-            recyclerView.setAdapter(new DevicesViewAdapter(DummyContent.ITEMS, mListener));
+
+            recyclerView.setAdapter(new DevicesViewAdapter(devices, mListener));
+
+
+            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                DividerItemDecoration.VERTICAL);
+            recyclerView.addItemDecoration(dividerItemDecoration);
+
         }
         return view;
     }
@@ -105,6 +125,6 @@ public class DeviceFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Device device);
     }
 }
