@@ -26,9 +26,10 @@ import android.widget.Toast;
 import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.fragment.*;
 import company.whitespace.smartifyandroid.model.Device;
+import company.whitespace.smartifyandroid.model.Room;
 import company.whitespace.smartifyandroid.networking.NetworkingAsyncTask;
 
-public class MainActivity extends AppCompatActivity implements DevicesFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements DevicesFragment.OnListFragmentInteractionListener, SensorsFragment.OnListFragmentInteractionListener {
 
     private NavigationView navigationView;
     private DrawerLayout drawer;
@@ -387,8 +388,15 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
             fab.hide();
     }
 
+    // Devices
     @Override
     public void onListFragmentInteraction(Device device) {
+
+    }
+
+    // Sensors
+    @Override
+    public void onListFragmentInteraction(Room room) {
 
     }
 
