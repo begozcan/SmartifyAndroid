@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import android.widget.Toast;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.fragment.DevicesFragment.OnListFragmentInteractionListener;
@@ -56,7 +57,7 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
         holder.btnOpen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("SWIPE MENU", "Open");
+                Log.d("SWIPE MENU", "Control " + holder.mItem.toString());
             }
         });
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -66,14 +67,14 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
 //                myViewHolder.sml.smoothCloseMenu();
 //                users.remove(vh.getAdapterPosition());
 //                mAdapter.notifyItemRemoved(vh.getAdapterPosition());
-                Log.d("SWIPE MENU", "Delete");
+                Log.d("SWIPE MENU", "Delete " + holder.mItem.toString());
             }
         });
 
         holder.btnLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("SWIPE MENU", "Left");
+                Log.d("SWIPE MENU", "Add Command" + holder.mItem.toString());
             }
         });
 
@@ -86,7 +87,7 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
         return mDevices.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder{
         public final View mView;
         public Device mItem;
 
@@ -108,6 +109,7 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
             btnDelete = itemView.findViewById(R.id.btDelete);
             btnLeft = itemView.findViewById(R.id.btLeft);
             sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
+
         }
 
         @Override

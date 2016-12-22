@@ -44,7 +44,7 @@ public class Device {
 
     @Override
     public String toString() {
-        return name;
+        return name + " @ " + room;
     }
 
 }

@@ -2,11 +2,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     tools:context=".fragment.ControlDeviceFragment">
 
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:text="Device:"
+            android:layout_marginBottom="5dp"/>
     <Spinner
             android:layout_width="wrap_content"
             android:layout_height="109dp"
-            android:id="@+id/device_spinner" android:layout_gravity="center_horizontal|top"/>
+            android:id="@+id/device_spinner"
+            />
 
 </FrameLayout>

@@ -7,8 +7,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
 import company.whitespace.smartifyandroid.R;
+import company.whitespace.smartifyandroid.model.Device;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static company.whitespace.smartifyandroid.model.Devices.getDevices;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,16 +27,9 @@ import company.whitespace.smartifyandroid.R;
  * Use the {@link ControlDeviceFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ControlDeviceFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+public class ControlDeviceFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+    private Spinner devices_spinner;
+    private List<Device> devices = new ArrayList<Device>();
     private OnFragmentInteractionListener mListener;
 
     public ControlDeviceFragment() {
@@ -37,17 +39,12 @@ public class ControlDeviceFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment ControlDeviceFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ControlDeviceFragment newInstance(String param1, String param2) {
+    public static ControlDeviceFragment newInstance() {
         ControlDeviceFragment fragment = new ControlDeviceFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,17 +52,25 @@ public class ControlDeviceFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        devices  = getDevices();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_control_device, container, false);
+        View view = inflater.inflate(R.layout.fragment_control_device, container, false);
+
+        devices_spinner = (Spinner) view.findViewById(R.id.device_spinner);
+
+        List<String> devices_str = toStringList(devices);
+        devices_spinner.setOnItemSelectedListener(this);
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, devices_str);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        devices_spinner.setAdapter(dataAdapter);
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -90,6 +95,29 @@ public class ControlDeviceFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public List<String> toStringList(List list) {
+        List<String> stringList = new ArrayList<String>();
+
+        for (int i = 0; i < list.size() ; i++) {
+            stringList.add(list.get(i).toString());
+        }
+
+        return stringList;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // On selecting a spinner item
+        String item = parent.getItemAtPosition(position).toString();
+
+        // Showing selected spinner item
+        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+    }
+
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // TODO Auto-generated method stub
     }
 
     /**
