@@ -3,6 +3,7 @@ package company.whitespace.smartifyandroid.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,6 +34,7 @@ public class DevicesFragment extends Fragment {
     private int mColumnCount = 1;
     private List<Device> devices = new ArrayList<Device>();
     private OnListFragmentInteractionListener mListener;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -80,7 +82,7 @@ public class DevicesFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            recyclerView.setAdapter(new DevicesViewAdapter(devices, mListener));
+            recyclerView.setAdapter(new DevicesViewAdapter(devices, mListener, getActivity().getSupportFragmentManager()));
 
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 DividerItemDecoration.VERTICAL);
@@ -122,4 +124,6 @@ public class DevicesFragment extends Fragment {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Device device);
     }
+
+
 }

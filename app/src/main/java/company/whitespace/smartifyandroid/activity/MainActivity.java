@@ -69,8 +69,6 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
 
     private ProgressDialog progressDialog;
 
-    private List<Device> devices = new ArrayList<Device>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -338,7 +336,17 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
             }
         }
 
-        //super.onBackPressed();
+        int count = getFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            //super.onBackPressed();
+            navItemIndex = 0;
+            CURRENT_TAG = TAG_DEVICES;
+            loadHomeFragment();
+            return;
+        } else {
+            getFragmentManager().popBackStack();
+        }
     }
 
     @Override
