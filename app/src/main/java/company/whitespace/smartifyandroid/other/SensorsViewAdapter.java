@@ -8,13 +8,12 @@ import android.widget.TextView;
 
 import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.fragment.SensorsFragment.OnListFragmentInteractionListener;
-import company.whitespace.smartifyandroid.fragment.dummy.DummyContent.DummyItem;
 import company.whitespace.smartifyandroid.model.Room;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */

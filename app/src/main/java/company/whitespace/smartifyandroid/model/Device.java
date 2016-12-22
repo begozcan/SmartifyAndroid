@@ -11,6 +11,7 @@ public class Device {
 
     public Device(String name, String room) {
         this.name = name;
+
         this.room = room;
         this.type = 0;
     }
@@ -45,4 +46,5 @@ public class Device {
     public String toString() {
         return name;
     }
+
 }

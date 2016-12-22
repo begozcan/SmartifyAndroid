@@ -1,6 +1,7 @@
 package company.whitespace.smartifyandroid.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -16,6 +17,8 @@ import company.whitespace.smartifyandroid.other.DevicesViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static company.whitespace.smartifyandroid.model.Devices.getDevices;
 
 /**
  * A fragment representing a list of Items.
@@ -57,11 +60,7 @@ public class DevicesFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
 
-        // TODO: Replace with real values
-        devices.add(new Device("Reading Lamp", "Living Room"));
-        devices.add(new Device("AC", "Living Room"));
-        devices.add(new Device("TV", "Living Room"));
-        devices.add(new Device("Computer", "Study Room"));
+        devices = getDevices();
     }
 
     @Override
@@ -81,8 +80,6 @@ public class DevicesFragment extends Fragment {
             else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-
-
 
             recyclerView.setAdapter(new DevicesViewAdapter(devices, mListener));
 

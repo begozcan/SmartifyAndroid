@@ -29,6 +29,9 @@ import company.whitespace.smartifyandroid.model.Device;
 import company.whitespace.smartifyandroid.model.Room;
 import company.whitespace.smartifyandroid.networking.NetworkingAsyncTask;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements DevicesFragment.OnListFragmentInteractionListener, SensorsFragment.OnListFragmentInteractionListener {
 
     private NavigationView navigationView;
@@ -65,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
     private String username, userEmail;
 
     private ProgressDialog progressDialog;
+
+    private List<Device> devices = new ArrayList<Device>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
