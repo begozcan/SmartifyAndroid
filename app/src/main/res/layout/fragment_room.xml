@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical" android:weightSum="1">
+
+    <TextView
+            android:id="@+id/room_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="23dp"
+            android:layout_marginLeft="@dimen/text_margin"
+            android:layout_marginBottom="3dp"
+            android:textSize="20dp"
+            android:textAppearance="?attr/textAppearanceListItem" />
+
+    <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#d8d8d8" />
+
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="16dp"
+                  android:layout_marginRight="16dp"
+                  android:orientation="horizontal" android:weightSum="1">
+
+       <ImageView android:layout_width="36dp"
+                  android:layout_height="38dp"
+                  android:src="@drawable/ic_light" android:layout_gravity="center_vertical"/>
+
+        <TextView
+                android:id="@+id/light_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_margin"
+                android:textStyle="bold"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:text="Light" />
+
+        <TextView
+                android:id="@+id/light_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_margin"
+                android:textAppearance="?attr/textAppearanceListItem" />
+
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="16dp"
+                  android:layout_marginRight="16dp"
+                  android:orientation="horizontal" android:weightSum="1">
+
+        <ImageView android:layout_width="35dp"
+                   android:layout_height="32dp"
+                   android:src="@drawable/thermometer" android:layout_gravity="center_vertical"/>
+
+        <TextView
+                android:id="@+id/temperature_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_margin"
+                android:textStyle="bold"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:text="Temperature" />
+
+        <TextView
+                android:id="@+id/temperature_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_margin"
+                android:textAppearance="?attr/textAppearanceListItem"/>
+
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="275dp"
+                  android:layout_height="match_parent"
+                  android:layout_marginLeft="16dp"
+                  android:layout_marginRight="16dp"
+                  android:orientation="horizontal" android:layout_weight="1.29" android:weightSum="1">
+
+        <ImageView android:layout_width="32dp"
+                   android:layout_height="39dp"
+                   android:src="@drawable/ic_humidity" android:layout_gravity="center_vertical"
+        />
+
+        <TextView
+                android:id="@+id/humidity_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_margin"
+                android:textStyle="bold"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:text="Humidity" />
+
+        <TextView
+                android:id="@+id/humidity_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_margin"
+                android:textAppearance="?attr/textAppearanceListItem" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

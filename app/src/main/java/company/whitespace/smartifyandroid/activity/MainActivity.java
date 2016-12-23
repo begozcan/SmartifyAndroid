@@ -26,14 +26,18 @@ import android.widget.Toast;
 import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.fragment.*;
 import company.whitespace.smartifyandroid.model.Device;
+import company.whitespace.smartifyandroid.model.Room;
 import company.whitespace.smartifyandroid.networking.NetworkingAsyncTask;
 
-public class MainActivity extends AppCompatActivity implements DevicesFragment.OnListFragmentInteractionListener {
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements DevicesFragment.OnListFragmentInteractionListener, SensorsFragment.OnListFragmentInteractionListener {
 
     private NavigationView navigationView;
     private DrawerLayout drawer;
     private View navHeader;
-    private ImageView imgNavHeaderBg, imgProfile;
+    //private ImageView imgNavHeaderBg, imgProfile;
     private TextView txtName, txtWebsite;
     private Toolbar toolbar;
     private FloatingActionButton fab;
@@ -332,7 +336,17 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
             }
         }
 
-        //super.onBackPressed();
+        int count = getFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            //super.onBackPressed();
+            navItemIndex = 0;
+            CURRENT_TAG = TAG_DEVICES;
+            loadHomeFragment();
+            return;
+        } else {
+            getFragmentManager().popBackStack();
+        }
     }
 
     @Override
@@ -387,8 +401,15 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
             fab.hide();
     }
 
+    // Devices
     @Override
     public void onListFragmentInteraction(Device device) {
+
+    }
+
+    // Sensors
+    @Override
+    public void onListFragmentInteraction(Room room) {
 
     }
 

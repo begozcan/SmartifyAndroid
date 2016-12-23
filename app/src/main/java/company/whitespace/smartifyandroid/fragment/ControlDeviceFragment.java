@@ -4,31 +4,26 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.*;
 import company.whitespace.smartifyandroid.R;
+import company.whitespace.smartifyandroid.model.Device;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ControlDeviceFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ControlDeviceFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ControlDeviceFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import java.util.ArrayList;
+import java.util.List;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+import static company.whitespace.smartifyandroid.model.Devices.getDevices;
 
+public class ControlDeviceFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+    private Spinner devicesSpinner;
+    private TextView powerButton;
+    private LinearLayout powerLayout;
+    private List<Device> devices = new ArrayList<Device>();
     private OnFragmentInteractionListener mListener;
+    private int deviceId = -1;
 
     public ControlDeviceFragment() {
         // Required empty public constructor
@@ -37,43 +32,57 @@ public class ControlDeviceFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment ControlDeviceFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ControlDeviceFragment newInstance(String param1, String param2) {
-        ControlDeviceFragment fragment = new ControlDeviceFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+//    public static ControlDeviceFragment newInstance() {
+//        ControlDeviceFragment fragment = new ControlDeviceFragment();
+//        //Bundle args = new Bundle();
+//        //fragment.setArguments(args);
+//        return fragment;
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        devices  = getDevices();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_control_device, container, false);
+        View view = inflater.inflate(R.layout.fragment_control_device, container, false);
+
+        devicesSpinner = (Spinner) view.findViewById(R.id.device_spinner);
+        powerButton = (TextView) view.findViewById(R.id.power_button);
+        powerLayout = (LinearLayout) view.findViewById(R.id.power_layout);
+
+        Bundle bundle = this.getArguments();
+
+        if(bundle != null){
+            deviceId = Integer.parseInt(bundle.getString("device_id"));
+        }
+
+        Log.d("DEVICE_ID", String.valueOf(deviceId));
+
+        List<String> devices_str = toStringList(devices);
+        devicesSpinner.setOnItemSelectedListener(this);
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, devices_str);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        devicesSpinner.setAdapter(dataAdapter);
+
+        if (deviceId != -1) {
+            devicesSpinner.setSelection(deviceId + 1);
+        }
+
+
+        powerButton.setOnClickListener(new powerOnClickListener());
+
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -92,18 +101,60 @@ public class ControlDeviceFragment extends Fragment {
         mListener = null;
     }
 
+    // Convert list to String list for spinner
+    public List<String> toStringList(List list) {
+        List<String> stringList = new ArrayList<String>();
+
+        for (int i = 0; i < list.size() ; i++) {
+            stringList.add(list.get(i).toString());
+        }
+
+        stringList.add(0, "Select one...");
+        return stringList;
+    }
+
+    // Listeners for Devices Spinner
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // On selecting a spinner item
+
+        deviceId = position - 1;
+        Log.d("DEVICE_ID", String.valueOf(deviceId));
+        String item = parent.getItemAtPosition(position).toString();
+        if (position > 0) {
+            // Showing selected spinner item
+            Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+            powerLayout.setVisibility(View.VISIBLE);
+        }
+        else {
+            powerLayout.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void onNothingSelected(AdapterView<?> arg0) {
+        devicesSpinner.setSelection(0);
+        powerLayout.setVisibility(View.INVISIBLE);
+    }
+
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    // Listener for Toggle Power button
+    private class powerOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            if (deviceId > -1) {
+                Log.d("POWER_BUTTON", "Toggle power for " + devices.get(deviceId).toString());
+            }
+        }
     }
 }

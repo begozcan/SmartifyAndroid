@@ -3,6 +3,7 @@ package company.whitespace.smartifyandroid.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +17,8 @@ import company.whitespace.smartifyandroid.other.DevicesViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static company.whitespace.smartifyandroid.model.Devices.getDevices;
 
 /**
  * A fragment representing a list of Items.
@@ -31,6 +34,7 @@ public class DevicesFragment extends Fragment {
     private int mColumnCount = 1;
     private List<Device> devices = new ArrayList<Device>();
     private OnListFragmentInteractionListener mListener;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -57,11 +61,7 @@ public class DevicesFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
 
-        // TODO: Replace with real values
-        devices.add(new Device("Reading Lamp", "Living Room"));
-        devices.add(new Device("AC", "Living Room"));
-        devices.add(new Device("TV", "Living Room"));
-        devices.add(new Device("Computer", "Study Room"));
+        devices = getDevices();
     }
 
     @Override
@@ -82,10 +82,7 @@ public class DevicesFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-
-
-            recyclerView.setAdapter(new DevicesViewAdapter(devices, mListener));
-
+            recyclerView.setAdapter(new DevicesViewAdapter(devices, mListener, getActivity().getSupportFragmentManager()));
 
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 DividerItemDecoration.VERTICAL);
@@ -127,4 +124,6 @@ public class DevicesFragment extends Fragment {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Device device);
     }
+
+
 }
