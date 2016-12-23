@@ -12,7 +12,7 @@ public class Devices {
     public static List<Device> getDevices() {
         devices = new ArrayList<Device>();
 
-        // TODO: Replace with real values
+        // TODO: Replace with real values from the server
         devices.add(new Device("Reading Lamp", "Living Room"));
         devices.add(new Device("AC", "Living Room"));
         devices.add(new Device("TV", "Living Room"));

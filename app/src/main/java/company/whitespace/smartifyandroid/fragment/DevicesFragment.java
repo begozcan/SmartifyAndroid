@@ -35,7 +35,6 @@ public class DevicesFragment extends Fragment {
     private List<Device> devices = new ArrayList<Device>();
     private OnListFragmentInteractionListener mListener;
 
-
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -91,7 +90,6 @@ public class DevicesFragment extends Fragment {
         }
         return view;
     }
-
 
     @Override
     public void onAttach(Context context) {

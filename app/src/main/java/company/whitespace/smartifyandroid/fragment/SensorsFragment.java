@@ -3,18 +3,23 @@ package company.whitespace.smartifyandroid.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.model.Room;
 import company.whitespace.smartifyandroid.other.SensorsViewAdapter;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,12 +28,11 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class SensorsFragment extends Fragment {
+public class SensorsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
+    private RecyclerView recyclerView;
+    private SwipeRefreshLayout refreshLayout;
+    private TextView lastRefreshed;
     private OnListFragmentInteractionListener mListener;
     private List<Room> rooms;
 
@@ -43,9 +47,9 @@ public class SensorsFragment extends Fragment {
     @SuppressWarnings("unused")
     public static SensorsFragment newInstance(int columnCount) {
         SensorsFragment fragment = new SensorsFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
+//        Bundle args = new Bundle();
+//        args.putInt(ARG_COLUMN_COUNT, columnCount);
+//        fragment.setArguments(args);
         return fragment;
     }
 
@@ -53,13 +57,11 @@ public class SensorsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
-
         rooms = new ArrayList<Room>();
+        // TODO: Fill with actual rooms
         rooms.add(new Room("Living Room", "Light", 25, 34));
         rooms.add(new Room("Study Room", "Dark", 26, 30));
+
     }
 
     @Override
@@ -67,26 +69,23 @@ public class SensorsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_room_list, container, false);
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
+        recyclerView = (RecyclerView) view.findViewById(R.id.sensor_list);
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
+        lastRefreshed = (TextView) view.findViewById(R.id.last_refreshed);
 
+        // Set the adapters
+        Context context = view.getContext();
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(new SensorsViewAdapter(rooms, mListener));
 
-            recyclerView.setAdapter(new SensorsViewAdapter(rooms, mListener));
+        refreshLayout.setOnRefreshListener(this);
 
-            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                    DividerItemDecoration.VERTICAL);
-            recyclerView.addItemDecoration(dividerItemDecoration);
-        }
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
         return view;
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -105,15 +104,26 @@ public class SensorsFragment extends Fragment {
         mListener = null;
     }
 
+    // Listener for Swipe to Refresh
+    @Override
+    public void onRefresh() {
+        Log.d("SENSORS_FREAGMENT", "Refreshed");
+
+        //TODO: Get sensor values from the server
+
+        DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date refreshDate = new Date();
+        String str = "Last refreshed on " + sdf.format(refreshDate);
+        lastRefreshed.setText(str);
+
+        refreshLayout.setRefreshing(false);
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name

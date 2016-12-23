@@ -136,7 +136,6 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
         powerLayout.setVisibility(View.INVISIBLE);
     }
 
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -153,6 +152,7 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
         @Override
         public void onClick(View view) {
             if (deviceId > -1) {
+                //TODO: Send command to server
                 Log.d("POWER_BUTTON", "Toggle power for " + devices.get(deviceId).toString());
             }
         }
