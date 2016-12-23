@@ -1,5 +1,6 @@
 package company.whitespace.smartifyandroid.other;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -44,7 +45,7 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mItem = mDevices.get(position);
         holder.deviceName.setText(mDevices.get(position).getName());
         holder.deviceRoom.setText(mDevices.get(position).getRoom());
@@ -65,13 +66,17 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
             public void onClick(View v) {
                 Log.d("SWIPE MENU", "Control: " + holder.mItem.toString());
 
+                Bundle bundle = new Bundle();
+                bundle.putString("device_id", String.valueOf(position));
+
                 // update the main content by replacing fragments
                 Fragment fragment = new ControlDeviceFragment();
+                fragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
                         android.R.anim.fade_out);
                 fragmentTransaction.replace(R.id.frame, fragment, "CONTROL_DEVICE");
-                fragmentTransaction.commitAllowingStateLoss();
+                fragmentTransaction.commit();
 
             }
         });
@@ -92,12 +97,17 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
             public void onClick(View v) {
                 Log.d("SWIPE MENU", "Add Command: " + holder.mItem.toString());
 
+                Bundle bundle = new Bundle();
+                bundle.putString("device_id", String.valueOf(position));
+
+                // update the main content by replacing fragments
                 Fragment fragment = new AddCommandFragment();
+                fragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
                         android.R.anim.fade_out);
                 fragmentTransaction.replace(R.id.frame, fragment, "ADD_COMMAND");
-                fragmentTransaction.commitAllowingStateLoss();
+                fragmentTransaction.commit();
             }
         });
 
