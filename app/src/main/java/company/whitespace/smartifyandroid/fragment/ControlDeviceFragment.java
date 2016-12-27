@@ -24,11 +24,12 @@ import static company.whitespace.smartifyandroid.model.Devices.getDevices;
 
 public class ControlDeviceFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private Spinner devicesSpinner;
-    private RelativeLayout remoteButtons;
+    private LinearLayout remoteButtons;
     private TextView screen;
     private Button powerButton;
-    private Button deleteButton;
-    private Button okButton;
+    private ImageButton deleteButton;
+    private ImageButton okButton;
+
     private Button button1;
     private Button button2;
     private Button button3;
@@ -76,11 +77,11 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
         View view = inflater.inflate(R.layout.fragment_control_device, container, false);
 
         devicesSpinner = (Spinner) view.findViewById(R.id.device_spinner);
-        remoteButtons = (RelativeLayout) view.findViewById(R.id.remote_buttons);
+        remoteButtons = (LinearLayout) view.findViewById(R.id.remote_buttons);
         screen = (TextView) view.findViewById(R.id.screen);
         powerButton = (Button) view.findViewById(R.id.power_button);
-        deleteButton = (Button) view.findViewById(R.id.button_delete);
-        okButton = (Button) view.findViewById(R.id.button_ok);
+        deleteButton = (ImageButton) view.findViewById(R.id.button_delete);
+        okButton = (ImageButton) view.findViewById(R.id.button_ok);
         // Numpad
         button1 = (Button) view.findViewById(R.id.button_1);
         button2 = (Button) view.findViewById(R.id.button_2);
@@ -172,7 +173,11 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
             Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             //TODO: Check type of device, show accordingly
             powerButton.setVisibility(View.VISIBLE);
-            remoteButtons.setVisibility(View.VISIBLE);
+
+            if (devices.get(deviceId).getName() == "TV")
+                remoteButtons.setVisibility(View.VISIBLE);
+            else
+                remoteButtons.setVisibility(View.INVISIBLE);
         }
         else {
             powerButton.setVisibility(View.INVISIBLE);

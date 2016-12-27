@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Pair;
+import android.widget.Toast;
 import com.goebl.david.Request;
 import com.goebl.david.Webb;
 import com.google.gson.Gson;
@@ -25,6 +26,7 @@ public abstract class NetworkingAsyncTask extends AsyncTask<Pair<String, String>
     protected Webb webb;
     protected String requestLink;
     protected String result;
+    private boolean error;
 
     public NetworkingAsyncTask(Context context, String requestLink) {
         this.context = context;
@@ -35,25 +37,40 @@ public abstract class NetworkingAsyncTask extends AsyncTask<Pair<String, String>
 
     @Override
     protected Void doInBackground(Pair<String, String>... pairs) {
+        try {
+            SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.networking_shared_preferences), Context.MODE_PRIVATE);
+            String session = sharedPreferences.getString("session", "");
+            if (session.equals(""))
+                onSessionFail();
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.networking_shared_preferences), Context.MODE_PRIVATE);
-        String session = sharedPreferences.getString("session", "");
-        if (session.equals(""))
-            onSessionFail();
+            Request request = webb.post(context.getString(R.string.domain) + requestLink);
+            for (Pair<String, String> pair : pairs) {
+                request.param(pair.first, pair.second);
+                Log.i("Pair", pair.first + pair.second);
+            }
+            result = request.asString().getBody();
+            if (result == null || result.contentEquals("Session Expired")) {
+                onSessionFail();
+            } else {
+                onSuccess();
+            }
+        } catch (Exception e) {
+            //e.printStackTrace();
 
-        Request request = webb.post(context.getString(R.string.domain) + requestLink);
-        for (Pair<String, String> pair : pairs) {
-            request.param(pair.first, pair.second);
-            Log.i("Pair", pair.first + pair.second);
-        }
-        result = request.asString().getBody();
-        if (result == null || result.contentEquals("Session Expired")) {
-            onSessionFail();
-        } else {
-            onSuccess();
+            error = true;
+        } finally {
         }
 
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        if(error){
+            Toast.makeText(context, "Please check your Internet Connection.", Toast.LENGTH_LONG).show();
+        }
+
+        super.onPostExecute(aVoid);
     }
 
     public abstract void onSessionFail();
