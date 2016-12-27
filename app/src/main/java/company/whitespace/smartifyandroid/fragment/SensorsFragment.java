@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static company.whitespace.smartifyandroid.model.Rooms.getRooms;
+
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -57,10 +59,7 @@ public class SensorsFragment extends Fragment implements SwipeRefreshLayout.OnRe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        rooms = new ArrayList<Room>();
-        // TODO: Fill with actual rooms
-        rooms.add(new Room("Living Room", "Light", 25, 34));
-        rooms.add(new Room("Study Room", "Dark", 26, 30));
+        rooms = getRooms(getContext());
 
     }
 
@@ -109,7 +108,9 @@ public class SensorsFragment extends Fragment implements SwipeRefreshLayout.OnRe
     public void onRefresh() {
         Log.d("SENSORS_FREAGMENT", "Refreshed");
 
-        //TODO: Get sensor values from the server
+        //TODO: Fix this it does not updatex
+        rooms = getRooms(getContext());
+        ((SensorsViewAdapter) recyclerView.getAdapter()).updateList(rooms);
 
         DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date refreshDate = new Date();

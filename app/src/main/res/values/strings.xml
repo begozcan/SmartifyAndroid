@@ -1,6 +1,8 @@
 <resources>
     <string name="domain">http://smartify.white-space.company/</string>
     <string name="networking_shared_preferences">networking</string>
+    <string name="devices_shared_preferences">devices</string>
+    <string name="sensors_shared_preferences">sensors</string>
 
     <string name="app_name">Smartify</string>
 
