@@ -12,3 +12,5 @@
         app:layoutManager="LinearLayoutManager"
         tools:context=".fragment.DevicesFragment"
         tools:listitem="@layout/item_device"/>
+
+

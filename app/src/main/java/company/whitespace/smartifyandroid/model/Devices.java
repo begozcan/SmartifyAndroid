@@ -14,9 +14,8 @@ public class Devices {
 
         // TODO: Replace with real values from the server
         devices.add(new Device("Reading Lamp", "Living Room"));
-        devices.add(new Device("AC", "Living Room"));
         devices.add(new Device("TV", "Living Room"));
-        devices.add(new Device("Computer", "Study Room"));
+        devices.add(new Device("AC", "Living Room"));
 
         return devices;
     }

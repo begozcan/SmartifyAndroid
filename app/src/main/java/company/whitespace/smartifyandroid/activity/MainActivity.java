@@ -1,5 +1,6 @@
 package company.whitespace.smartifyandroid.activity;
 
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
     //private ImageView imgNavHeaderBg, imgProfile;
     private TextView txtName, txtWebsite;
     private Toolbar toolbar;
-    private FloatingActionButton fab;
+    public FloatingActionButton fab;
 
     // urls to load navigation header background image
     // and profile image
@@ -50,11 +52,11 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
     public static int navItemIndex = 0;
 
     // tags used to attach the fragments
-    private static final String TAG_DEVICES = "devices";
-    private static final String TAG_SENSORS = "sensors";
-    private static final String TAG_CONTROL_DEVICE = "control device";
-    private static final String TAG_ADD_COMMAND = "add command";
-    private static final String TAG_MANAGE_GROUP = "manage group";
+    public static final String TAG_DEVICES = "devices";
+    public static final String TAG_SENSORS = "sensors";
+    public static final String TAG_CONTROL_DEVICE = "control device";
+    public static final String TAG_ADD_COMMAND = "add command";
+    public static final String TAG_MANAGE_GROUP = "manage group";
     private static final String TAG_SETTINGS = "settings";
     public static String CURRENT_TAG = TAG_DEVICES;
 
@@ -115,6 +117,14 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
             CURRENT_TAG = TAG_DEVICES;
             loadHomeFragment();
         }
+
+        findViewById(R.id.frame).addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
+                Log.i("DENEMEME",CURRENT_TAG);
+                toggleFab();
+            }
+        });
     }
 
     @Override
@@ -250,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
 
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {
-                    //Replacing the main content with ContentFragment Which is our Inbox View;
+                    //Replacing the main content with ContentFragment;
                     case R.id.nav_devices:
                         navItemIndex = 0;
                         CURRENT_TAG = TAG_DEVICES;
@@ -395,7 +405,7 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
 
     // show or hide the fab
     private void toggleFab() {
-        if (navItemIndex == 0)
+        if (CURRENT_TAG.equals(TAG_DEVICES))
             fab.show();
         else
             fab.hide();

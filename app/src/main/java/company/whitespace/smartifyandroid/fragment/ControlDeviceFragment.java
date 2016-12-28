@@ -170,7 +170,7 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
         String item = parent.getItemAtPosition(position).toString();
         if (position > 0) {
             // Showing selected spinner item
-            Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+            //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             //TODO: Check type of device, show accordingly
             powerButton.setVisibility(View.VISIBLE);
 
@@ -191,7 +191,7 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
         remoteButtons.setVisibility(View.INVISIBLE);
     }
 
-    public void sendToServer(String value) {
+    public void sendToServer(String header, String value) {
         JSONObject data = new JSONObject();
 
         try {
@@ -204,7 +204,7 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
 
         JSONObject obj = new JSONObject();
         try {
-            obj.put("Header", "infra");
+            obj.put("Header", header);
             obj.put("Data", data);
         } catch (Exception e) {
             e.printStackTrace();
@@ -238,7 +238,13 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
             if (deviceId > -1)
                 switch (view.getId()) {
                     case R.id.power_button:
-                        sendToServer("p");
+                        // TODO: Check type instead of name
+                        if (devices.get(deviceId).getName() == "TV") {
+                            sendToServer("infra", "p");
+                        }
+                        else {
+                            sendToServer("ac", "p");
+                        }
                         break;
                     case R.id.button_1:
                         channelNo.append('1');
@@ -288,8 +294,10 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
                         break;
                     case R.id.button_ok:
                         if (channelNo.length() > 0) {
-                            sendToServer(channelNo.toString());
+                            sendToServer("infra", channelNo.toString());
                         }
+                        channelNo.setLength(0);
+                        screen.setText(channelNo);
                         break;
 
             }
