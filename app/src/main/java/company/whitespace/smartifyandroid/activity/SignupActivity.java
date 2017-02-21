@@ -111,11 +111,12 @@ public class SignupActivity extends AppCompatActivity {
     public void onSignupSuccess() {
         _signupButton.setEnabled(true);
         setResult(RESULT_OK, null);
-        startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+        startActivity(new Intent(SignupActivity.this, ConfirmSignupActivity.class));
     }
 
     public void onSignupFailed() {
-        progressDialog.dismiss();
+        if(progressDialog != null)
+            progressDialog.dismiss();
         Toast.makeText(getBaseContext(), "Sign up failed", Toast.LENGTH_LONG).show();
         _signupButton.setEnabled(true);
     }

@@ -23,21 +23,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
 import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.fragment.*;
-import company.whitespace.smartifyandroid.fragment.DevicesFragment;
+import company.whitespace.smartifyandroid.model.Device;
+import company.whitespace.smartifyandroid.model.Room;
 import company.whitespace.smartifyandroid.networking.NetworkingAsyncTask;
-import company.whitespace.smartifyandroid.other.CircleTransform;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements DevicesFragment.OnListFragmentInteractionListener, SensorsFragment.OnListFragmentInteractionListener {
 
     private NavigationView navigationView;
     private DrawerLayout drawer;
     private View navHeader;
-    private ImageView imgNavHeaderBg, imgProfile;
+    //private ImageView imgNavHeaderBg, imgProfile;
     private TextView txtName, txtWebsite;
     private Toolbar toolbar;
     private FloatingActionButton fab;
@@ -336,7 +336,17 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        //super.onBackPressed();
+        int count = getFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            //super.onBackPressed();
+            navItemIndex = 0;
+            CURRENT_TAG = TAG_DEVICES;
+            loadHomeFragment();
+            return;
+        } else {
+            getFragmentManager().popBackStack();
+        }
     }
 
     @Override
@@ -389,6 +399,18 @@ public class MainActivity extends AppCompatActivity {
             fab.show();
         else
             fab.hide();
+    }
+
+    // Devices
+    @Override
+    public void onListFragmentInteraction(Device device) {
+
+    }
+
+    // Sensors
+    @Override
+    public void onListFragmentInteraction(Room room) {
+
     }
 
     private class LogoutAsyncTask extends NetworkingAsyncTask {

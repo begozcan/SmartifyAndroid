@@ -5,4 +5,7 @@
     <color name="colorPrimaryDarker">#0a84ac</color>
     <color name="colorAccent">#E11F72</color>
     <color name="white">#FFFFFF</color>
+    <color name="red">#E84E40</color>
+    <color name="yellow">#FFC400</color>
+    <color name="green">#8EC436</color>
 </resources>
