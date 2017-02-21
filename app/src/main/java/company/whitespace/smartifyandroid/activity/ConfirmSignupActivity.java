@@ -46,8 +46,10 @@ public class ConfirmSignupActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Uri data = intent.getData();
 
-        _emailText.setText(data.getQueryParameter("email"));
-        _confCode.setText(data.getQueryParameter("key"));
+        if (data != null) {
+            _emailText.setText(data.getQueryParameter("email"));
+            _confCode.setText(data.getQueryParameter("key"));
+        }
     }
 
     public void confirm() {
