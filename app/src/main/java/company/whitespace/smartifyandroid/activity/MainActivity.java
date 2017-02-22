@@ -1,6 +1,5 @@
 package company.whitespace.smartifyandroid.activity;
 
-import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -21,7 +20,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,9 +28,6 @@ import company.whitespace.smartifyandroid.fragment.*;
 import company.whitespace.smartifyandroid.model.Device;
 import company.whitespace.smartifyandroid.model.Room;
 import company.whitespace.smartifyandroid.networking.NetworkingAsyncTask;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements DevicesFragment.OnListFragmentInteractionListener, SensorsFragment.OnListFragmentInteractionListener {
 
@@ -55,7 +50,8 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
     public static final String TAG_DEVICES = "devices";
     public static final String TAG_SENSORS = "sensors";
     public static final String TAG_CONTROL_DEVICE = "control device";
-    public static final String TAG_ADD_COMMAND = "add command";
+    public static final String TAG_ADD_SCHEDULE = "add schedule";
+    public static final String TAG_ADD_CONDITION = "add condition";
     public static final String TAG_MANAGE_GROUP = "manage group";
     private static final String TAG_SETTINGS = "settings";
     public static String CURRENT_TAG = TAG_DEVICES;
@@ -212,31 +208,26 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
     private Fragment getHomeFragment() {
         switch (navItemIndex) {
             case 0:
-                // home
                 DevicesFragment devicesFragment = new DevicesFragment();
                 return devicesFragment;
             case 1:
-                // photos
                 SensorsFragment sensorsFragment = new SensorsFragment();
                 return sensorsFragment;
             case 2:
-                // movies fragment
                 ControlDeviceFragment controlDeviceFragment = new ControlDeviceFragment();
                 return controlDeviceFragment;
             case 3:
-                // notifications fragment
-                AddCommandFragment addCommandFragment = new AddCommandFragment();
-                return addCommandFragment;
-
+                AddScheduleFragment addScheduleFragment = new AddScheduleFragment();
+                return addScheduleFragment;
             case 4:
-                // settings fragment
-                ManageGroupFragment manageGroupFragment = new ManageGroupFragment();
-                return manageGroupFragment;
-
+                AddConditionFragment addConditionFragment = new AddConditionFragment();
+                return addConditionFragment;
             case 5:
-                // settings fragment
                 SettingsFragment settingsFragment = new SettingsFragment();
                 return settingsFragment;
+            case 6:
+                ManageGroupFragment manageGroupFragment = new ManageGroupFragment();
+                return manageGroupFragment;
             default:
                 return new DevicesFragment();
         }
@@ -273,16 +264,20 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
                         navItemIndex = 2;
                         CURRENT_TAG = TAG_CONTROL_DEVICE;
                         break;
-                    case R.id.nav_add_command:
+                    case R.id.nav_add_schedule:
                         navItemIndex = 3;
-                        CURRENT_TAG = TAG_ADD_COMMAND;
+                        CURRENT_TAG = TAG_ADD_SCHEDULE;
+                        break;
+                    case R.id.nav_add_condition:
+                        navItemIndex = 4;
+                        CURRENT_TAG = TAG_ADD_CONDITION;
                         break;
                     case R.id.nav_manage_group:
-                        navItemIndex = 4;
+                        navItemIndex = 5;
                         CURRENT_TAG = TAG_MANAGE_GROUP;
                         break;
                     case R.id.nav_settings:
-                        navItemIndex = 5;
+                        navItemIndex = 6;
                         CURRENT_TAG = TAG_SETTINGS;
                         break;
                     default:

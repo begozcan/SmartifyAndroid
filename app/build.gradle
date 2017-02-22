@@ -26,15 +26,6 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
 
-    // Networking Libraries
-    
-
-    // Glide Library
-    
-    // ButterKnife Library
-    
-    //SwipeMenu Library
-    
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'com.android.support:design:25.0.0'
     compile 'com.android.support:support-v4:25.0.0'
@@ -45,6 +36,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.tubb.smrv:swipemenu-recyclerview:5.4.0'
 }
+
 
 
 

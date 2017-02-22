@@ -27,9 +27,10 @@
         <item>Devices</item>
         <item>Sensors</item>
         <item>Control Device</item>
-        <item>Add Command</item>
-        <item>Manage Group</item>
+        <item>Add Schedule</item>
+        <item>Add Condition</item>
         <item>Settings</item>
+        <item>Manage Group</item>
     </string-array>
 
     <string name="activity_title_about_us">About Us</string>

@@ -1,7 +1,6 @@
 package company.whitespace.smartifyandroid.other;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -15,7 +14,8 @@ import android.widget.TextView;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.activity.MainActivity;
-import company.whitespace.smartifyandroid.fragment.AddCommandFragment;
+import company.whitespace.smartifyandroid.fragment.AddConditionFragment;
+import company.whitespace.smartifyandroid.fragment.AddScheduleFragment;
 import company.whitespace.smartifyandroid.fragment.ControlDeviceFragment;
 import company.whitespace.smartifyandroid.fragment.DevicesFragment.OnListFragmentInteractionListener;
 import company.whitespace.smartifyandroid.model.Device;
@@ -97,23 +97,44 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
             }
         });
 
-        holder.btnLeft.setOnClickListener(new View.OnClickListener() {
+        holder.btnAddSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("SWIPE MENU", "Add Command: " + holder.mItem.toString());
+                Log.d("SWIPE MENU", "Add Schedule: " + holder.mItem.toString());
 
                 Bundle bundle = new Bundle();
                 bundle.putString("device_id", String.valueOf(position));
 
                 // update the main content by replacing fragments
-                MainActivity.CURRENT_TAG = MainActivity.TAG_ADD_COMMAND;
+                MainActivity.CURRENT_TAG = MainActivity.TAG_ADD_SCHEDULE;
 
-                Fragment fragment = new AddCommandFragment();
+                Fragment fragment = new AddScheduleFragment();
                 fragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
                         android.R.anim.fade_out);
-                fragmentTransaction.replace(R.id.frame, fragment, "add command");
+                fragmentTransaction.replace(R.id.frame, fragment, "add schedule");
+                fragmentTransaction.commit();
+            }
+        });
+
+        holder.btnAddCond.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("SWIPE MENU", "Add Condition: " + holder.mItem.toString());
+
+                Bundle bundle = new Bundle();
+                bundle.putString("device_id", String.valueOf(position));
+
+                // update the main content by replacing fragments
+                MainActivity.CURRENT_TAG = MainActivity.TAG_ADD_CONDITION;
+
+                Fragment fragment = new AddConditionFragment();
+                fragment.setArguments(bundle);
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                        android.R.anim.fade_out);
+                fragmentTransaction.replace(R.id.frame, fragment, "add condition");
                 fragmentTransaction.commit();
             }
         });
@@ -136,7 +157,8 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
 
         View btnOpen;
         View btnDelete;
-        View btnLeft;
+        View btnAddSchedule;
+        View btnAddCond;
         SwipeHorizontalMenuLayout sml;
 
         public ViewHolder(View itemView) {
@@ -147,7 +169,8 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
 
             btnOpen = itemView.findViewById(R.id.btOpen);
             btnDelete = itemView.findViewById(R.id.btDelete);
-            btnLeft = itemView.findViewById(R.id.btLeft);
+            btnAddSchedule = itemView.findViewById(R.id.bt_AddSchedule);
+            btnAddCond = itemView.findViewById(R.id.bt_AddCond);
             sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
 
         }

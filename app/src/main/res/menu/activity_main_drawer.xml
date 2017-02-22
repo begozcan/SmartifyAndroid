@@ -21,21 +21,29 @@
                 android:icon="@drawable/ic_remote"
                 android:title="Control Device"/>
         <item
-                android:id="@+id/nav_add_command"
+                android:id="@+id/nav_add_schedule"
+                android:icon="@drawable/ic_add_schedule"
+                android:title="Add Schedule"/>
+
+        <item
+                android:id="@+id/nav_add_condition"
                 android:icon="@drawable/ic_command"
-                android:title="Add Command"/>
+                android:title="Add Condition"/>
+
     </group>
 
     <group android:id="@+id/menu_settings"
            android:checkableBehavior="single">
         <item
-                android:id="@+id/nav_manage_group"
-                android:icon="@drawable/ic_group"
-                android:title="Manage Group"/>
-        <item
                 android:id="@+id/nav_settings"
                 android:icon="@drawable/ic_settings"
                 android:title="Settings"/>
+        <item
+                android:id="@+id/nav_manage_group"
+                android:icon="@drawable/ic_group"
+                android:title="Manage Group"
+                android:visible="false"/>
+
     </group>
 
 </menu>
