@@ -3,6 +3,7 @@ package company.whitespace.smartifyandroid.activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,9 +21,12 @@ public class ConfirmSignupActivity extends AppCompatActivity {
 
     private static final String TAG = "ConfirmSignupActivity";
 
-    @Bind(R.id.input_email) EditText _emailText;
-    @Bind(R.id.input_conf_code) EditText _confCode;
-    @Bind(R.id.btn_submit) Button _submitButton;
+    @Bind(R.id.input_email)
+    EditText _emailText;
+    @Bind(R.id.input_conf_code)
+    EditText _confCode;
+    @Bind(R.id.btn_submit)
+    Button _submitButton;
 
     ProgressDialog progressDialog;
 
@@ -38,6 +42,14 @@ public class ConfirmSignupActivity extends AppCompatActivity {
                 confirm();
             }
         });
+
+        Intent intent = getIntent();
+        Uri data = intent.getData();
+
+        if (data != null) {
+            _emailText.setText(data.getQueryParameter("email"));
+            _confCode.setText(data.getQueryParameter("key"));
+        }
     }
 
     public void confirm() {
@@ -69,14 +81,14 @@ public class ConfirmSignupActivity extends AppCompatActivity {
 
     public void onSubmitFailed() {
         Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_LONG).show();
-        if(progressDialog != null)
+        if (progressDialog != null)
             progressDialog.dismiss();
         _submitButton.setEnabled(true);
     }
 
     @Override
     protected void onDestroy() {
-        if(progressDialog != null)
+        if (progressDialog != null)
             progressDialog.dismiss();
         super.onDestroy();
     }
@@ -85,9 +97,17 @@ public class ConfirmSignupActivity extends AppCompatActivity {
         boolean valid = true;
 
         String email = _emailText.getText().toString();
+        String confCode = _confCode.getText().toString();
+
+        if (confCode.length() != 10) {
+            _confCode.setError("Must be 10 characters");
+            valid = false;
+        } else {
+            _confCode.setError(null);
+        }
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError("enter a valid email address");
+            _emailText.setError("Enter a valid email address");
             valid = false;
         } else {
             _emailText.setError(null);
