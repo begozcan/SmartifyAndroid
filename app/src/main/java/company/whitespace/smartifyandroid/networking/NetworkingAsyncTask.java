@@ -50,12 +50,18 @@ public abstract class NetworkingAsyncTask extends AsyncTask<Pair<String, String>
             }
             result = request.asString().getBody();
             if (result == null || result.contentEquals("Session Expired")) {
+                if(result == null){
+                    Log.i("RESULT", "NULL");
+                }
+                else{
+                    Log.i("RESULT", "SEESOYON");
+                }
                 onSessionFail();
             } else {
                 onSuccess();
             }
         } catch (Exception e) {
-            //e.printStackTrace();
+            e.printStackTrace();
 
             error = true;
         } finally {

@@ -19,6 +19,7 @@ import company.whitespace.smartifyandroid.activity.MainActivity;
 import company.whitespace.smartifyandroid.fragment.AddConditionFragment;
 import company.whitespace.smartifyandroid.fragment.AddScheduleFragment;
 import company.whitespace.smartifyandroid.fragment.ControlDeviceFragment;
+import company.whitespace.smartifyandroid.fragment.DevicesFragment;
 import company.whitespace.smartifyandroid.fragment.DevicesFragment.OnListFragmentInteractionListener;
 import company.whitespace.smartifyandroid.model.Device;
 import company.whitespace.smartifyandroid.networking.DeviceAsyncTask;
@@ -103,7 +104,9 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
                 pairs[0] = new Pair<>("name", holder.mItem.getName());
                 pairs[1] = new Pair<>("room", holder.mItem.getRoom());
                 pairs[2] = new Pair<>("type", holder.mItem.getType());
-                new DeviceAsyncTask(context, "devices_remove").execute(pairs);
+                DeviceAsyncTask deviceAsyncTask = new DeviceAsyncTask(context, "devices_remove");
+                deviceAsyncTask.setDevicesViewAdapter(DevicesViewAdapter.this);
+                deviceAsyncTask.execute(pairs);
             }
         });
 
@@ -158,7 +161,7 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
         return mDevices.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public Device mItem;
 
@@ -190,5 +193,16 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
             return super.toString() + " '" + deviceName.getText() + "'";
         }
 
+    }
+
+    public void onSuccess(){
+        MainActivity.CURRENT_TAG = MainActivity.TAG_DEVICES;
+        // update the main content by replacing fragments
+        Fragment fragment = new DevicesFragment();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                android.R.anim.fade_out);
+        fragmentTransaction.replace(R.id.frame, fragment, "devices");
+        fragmentTransaction.commit();
     }
 }

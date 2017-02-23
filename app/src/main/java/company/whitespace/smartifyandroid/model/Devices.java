@@ -25,7 +25,7 @@ public class Devices {
         pairs[0] = new Pair<>("name", "----------");
         pairs[1] = new Pair<>("room", "----------");
         pairs[2] = new Pair<>("type", "----------");
-        new DeviceAsyncTask(context, "messages").execute(pairs);
+        new DeviceAsyncTask(context, "devices_remove").execute(pairs);
 
         SharedPreferences deviceSharedPref = context.getSharedPreferences(context.getString(R.string.devices_shared_preferences), Context.MODE_PRIVATE);
 

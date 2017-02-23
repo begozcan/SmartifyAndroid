@@ -28,7 +28,7 @@ import org.json.JSONObject;
  * Use the {@link AddScheduleFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddDeviceFragment extends Fragment implements AdapterView.OnItemSelectedListener  {
+public class AddDeviceFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private static final String[] types = {"Select type...", "AC Plug Unit", "Sensor Unit", "Universal Remote Unit", "Radiator Control Unit"};
 
@@ -79,24 +79,25 @@ public class AddDeviceFragment extends Fragment implements AdapterView.OnItemSel
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            String name = deviceName.getText().toString();
-            String room = deviceRoom.getText().toString();
-            if (name != null && room != null && type > -1)
-                sendToServer(name, room);
-
-
-            MainActivity.CURRENT_TAG = MainActivity.TAG_DEVICES;
-            // update the main content by replacing fragments
-            Fragment fragment = new DevicesFragment();
-            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
-                    android.R.anim.fade_out);
-            fragmentTransaction.replace(R.id.frame, fragment, "devices");
-            fragmentTransaction.commit();
+                String name = deviceName.getText().toString();
+                String room = deviceRoom.getText().toString();
+                if (name != null && room != null && type > -1)
+                    sendToServer(name, room);
             }
         });
 
         return view;
+    }
+
+    public void onSuccess(){
+        MainActivity.CURRENT_TAG = MainActivity.TAG_DEVICES;
+        // update the main content by replacing fragments
+        Fragment fragment = new DevicesFragment();
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                android.R.anim.fade_out);
+        fragmentTransaction.replace(R.id.frame, fragment, "devices");
+        fragmentTransaction.commit();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -135,11 +136,13 @@ public class AddDeviceFragment extends Fragment implements AdapterView.OnItemSel
     }
 
     public void sendToServer(String name, String room) {
-            Pair<String, String>[] pairs = new Pair[3];
-            pairs[0] = new Pair<>("name", name);
-            pairs[1] = new Pair<>("room", room);
-            pairs[2] = new Pair<>("type", types[type]);
-            new DeviceAsyncTask(getContext(), "devices_add").execute(pairs);
+        Pair<String, String>[] pairs = new Pair[3];
+        pairs[0] = new Pair<>("name", name);
+        pairs[1] = new Pair<>("room", room);
+        pairs[2] = new Pair<>("type", types[type]);
+        DeviceAsyncTask deviceAsyncTask = new DeviceAsyncTask(getContext(), "devices_add");
+        deviceAsyncTask.setAddDeviceFragment(AddDeviceFragment.this);
+        deviceAsyncTask.execute(pairs);
     }
 
     /**
