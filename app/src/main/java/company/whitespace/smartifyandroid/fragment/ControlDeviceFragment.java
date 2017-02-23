@@ -66,7 +66,7 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        devices  = getDevices();
+        devices  = getDevices(getContext());
         deviceId = -1;
     }
 
@@ -164,7 +164,6 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
-
         deviceId = position - 1;
         Log.d("DEVICE_ID", String.valueOf(deviceId));
         String item = parent.getItemAtPosition(position).toString();

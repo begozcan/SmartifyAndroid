@@ -97,8 +97,15 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                // update the main content by replacing fragments
+                //MainActivity.CURRENT_TAG = MainActivity.TAG_ADD_SCHEDULE;
+
+                Fragment fragment = new AddDeviceFragment();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                        android.R.anim.fade_out);
+                fragmentTransaction.replace(R.id.frame, fragment, "add schedule");
+                fragmentTransaction.commit();
             }
         });
 

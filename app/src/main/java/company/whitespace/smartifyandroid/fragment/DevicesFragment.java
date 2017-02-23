@@ -64,7 +64,7 @@ public class DevicesFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
 
-        devices = getDevices();
+        devices = getDevices(getContext());
     }
 
     @Override

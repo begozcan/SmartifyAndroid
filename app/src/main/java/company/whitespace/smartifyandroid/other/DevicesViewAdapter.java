@@ -1,11 +1,13 @@
 package company.whitespace.smartifyandroid.other;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import company.whitespace.smartifyandroid.fragment.AddScheduleFragment;
 import company.whitespace.smartifyandroid.fragment.ControlDeviceFragment;
 import company.whitespace.smartifyandroid.fragment.DevicesFragment.OnListFragmentInteractionListener;
 import company.whitespace.smartifyandroid.model.Device;
+import company.whitespace.smartifyandroid.networking.DeviceAsyncTask;
 
 import java.util.List;
 
@@ -32,6 +35,7 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
     private final List<Device> mDevices;
     private final OnListFragmentInteractionListener mListener;
     private final FragmentManager fragmentManager;
+    private Context context;
 
     public DevicesViewAdapter(List<Device> devices, OnListFragmentInteractionListener listener, FragmentManager fragmentManager) {
         mDevices = devices;
@@ -41,7 +45,8 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
+        context = parent.getContext();
+        View view = LayoutInflater.from(context)
                 .inflate(R.layout.swipe_menu, parent, false);
         return new ViewHolder(view);
     }
@@ -94,6 +99,11 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
 //                users.remove(vh.getAdapterPosition());
 //                mAdapter.notifyItemRemoved(vh.getAdapterPosition());
                 Log.d("SWIPE MENU", "Delete: " + holder.mItem.toString());
+                Pair<String, String>[] pairs = new Pair[3];
+                pairs[0] = new Pair<>("name", holder.mItem.getName());
+                pairs[1] = new Pair<>("room", holder.mItem.getRoom());
+                pairs[2] = new Pair<>("type", holder.mItem.getType());
+                new DeviceAsyncTask(context, "devices_remove").execute(pairs);
             }
         });
 

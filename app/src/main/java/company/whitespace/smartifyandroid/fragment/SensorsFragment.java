@@ -108,7 +108,7 @@ public class SensorsFragment extends Fragment implements SwipeRefreshLayout.OnRe
     public void onRefresh() {
         Log.d("SENSORS_FREAGMENT", "Refreshed");
 
-        //TODO: Fix this it does not updatex
+        //TODO: Fix this it does not update rooms
         rooms = getRooms(getContext());
         ((SensorsViewAdapter) recyclerView.getAdapter()).updateList(rooms);
 
