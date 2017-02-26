@@ -1,11 +1,13 @@
 package company.whitespace.smartifyandroid.other;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +15,14 @@ import android.widget.TextView;
 
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 import company.whitespace.smartifyandroid.R;
-import company.whitespace.smartifyandroid.fragment.AddCommandFragment;
+import company.whitespace.smartifyandroid.activity.MainActivity;
+import company.whitespace.smartifyandroid.fragment.AddConditionFragment;
+import company.whitespace.smartifyandroid.fragment.AddScheduleFragment;
 import company.whitespace.smartifyandroid.fragment.ControlDeviceFragment;
+import company.whitespace.smartifyandroid.fragment.DevicesFragment;
 import company.whitespace.smartifyandroid.fragment.DevicesFragment.OnListFragmentInteractionListener;
 import company.whitespace.smartifyandroid.model.Device;
+import company.whitespace.smartifyandroid.networking.DeviceAsyncTask;
 
 import java.util.List;
 
@@ -30,6 +36,7 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
     private final List<Device> mDevices;
     private final OnListFragmentInteractionListener mListener;
     private final FragmentManager fragmentManager;
+    private Context context;
 
     public DevicesViewAdapter(List<Device> devices, OnListFragmentInteractionListener listener, FragmentManager fragmentManager) {
         mDevices = devices;
@@ -39,7 +46,8 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
+        context = parent.getContext();
+        View view = LayoutInflater.from(context)
                 .inflate(R.layout.swipe_menu, parent, false);
         return new ViewHolder(view);
     }
@@ -69,13 +77,16 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
                 Bundle bundle = new Bundle();
                 bundle.putString("device_id", String.valueOf(position));
 
+
+                MainActivity.CURRENT_TAG = MainActivity.TAG_CONTROL_DEVICE;
+
                 // update the main content by replacing fragments
                 Fragment fragment = new ControlDeviceFragment();
                 fragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
                         android.R.anim.fade_out);
-                fragmentTransaction.replace(R.id.frame, fragment, "CONTROL_DEVICE");
+                fragmentTransaction.replace(R.id.frame, fragment, "control device");
                 fragmentTransaction.commit();
 
             }
@@ -89,24 +100,54 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
 //                users.remove(vh.getAdapterPosition());
 //                mAdapter.notifyItemRemoved(vh.getAdapterPosition());
                 Log.d("SWIPE MENU", "Delete: " + holder.mItem.toString());
+                Pair<String, String>[] pairs = new Pair[3];
+                pairs[0] = new Pair<>("name", holder.mItem.getName());
+                pairs[1] = new Pair<>("room", holder.mItem.getRoom());
+                pairs[2] = new Pair<>("type", holder.mItem.getType());
+                DeviceAsyncTask deviceAsyncTask = new DeviceAsyncTask(context, "devices_remove");
+                deviceAsyncTask.setDevicesViewAdapter(DevicesViewAdapter.this);
+                deviceAsyncTask.execute(pairs);
             }
         });
 
-        holder.btnLeft.setOnClickListener(new View.OnClickListener() {
+        holder.btnAddSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("SWIPE MENU", "Add Command: " + holder.mItem.toString());
+                Log.d("SWIPE MENU", "Add Schedule: " + holder.mItem.toString());
 
                 Bundle bundle = new Bundle();
                 bundle.putString("device_id", String.valueOf(position));
 
                 // update the main content by replacing fragments
-                Fragment fragment = new AddCommandFragment();
+                MainActivity.CURRENT_TAG = MainActivity.TAG_ADD_SCHEDULE;
+
+                Fragment fragment = new AddScheduleFragment();
                 fragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
                         android.R.anim.fade_out);
-                fragmentTransaction.replace(R.id.frame, fragment, "ADD_COMMAND");
+                fragmentTransaction.replace(R.id.frame, fragment, "add schedule");
+                fragmentTransaction.commit();
+            }
+        });
+
+        holder.btnAddCond.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("SWIPE MENU", "Add Condition: " + holder.mItem.toString());
+
+                Bundle bundle = new Bundle();
+                bundle.putString("device_id", String.valueOf(position));
+
+                // update the main content by replacing fragments
+                MainActivity.CURRENT_TAG = MainActivity.TAG_ADD_CONDITION;
+
+                Fragment fragment = new AddConditionFragment();
+                fragment.setArguments(bundle);
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                        android.R.anim.fade_out);
+                fragmentTransaction.replace(R.id.frame, fragment, "add condition");
                 fragmentTransaction.commit();
             }
         });
@@ -120,7 +161,7 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
         return mDevices.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public Device mItem;
 
@@ -129,7 +170,8 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
 
         View btnOpen;
         View btnDelete;
-        View btnLeft;
+        View btnAddSchedule;
+        View btnAddCond;
         SwipeHorizontalMenuLayout sml;
 
         public ViewHolder(View itemView) {
@@ -140,7 +182,8 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
 
             btnOpen = itemView.findViewById(R.id.btOpen);
             btnDelete = itemView.findViewById(R.id.btDelete);
-            btnLeft = itemView.findViewById(R.id.btLeft);
+            btnAddSchedule = itemView.findViewById(R.id.bt_AddSchedule);
+            btnAddCond = itemView.findViewById(R.id.bt_AddCond);
             sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
 
         }
@@ -150,5 +193,16 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
             return super.toString() + " '" + deviceName.getText() + "'";
         }
 
+    }
+
+    public void onSuccess(){
+        MainActivity.CURRENT_TAG = MainActivity.TAG_DEVICES;
+        // update the main content by replacing fragments
+        Fragment fragment = new DevicesFragment();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                android.R.anim.fade_out);
+        fragmentTransaction.replace(R.id.frame, fragment, "devices");
+        fragmentTransaction.commit();
     }
 }

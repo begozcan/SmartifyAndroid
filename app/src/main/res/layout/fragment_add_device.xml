@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context="company.whitespace.smartifyandroid.fragment.AddDeviceFragment"
+              android:orientation="vertical"
+              android:padding="10dp">
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:layout_marginLeft="10dip"
+            android:text="Device Name:"
+            android:textSize="18dp"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="center_vertical"/>
+
+    <EditText android:id="@+id/input_device_name"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:inputType="text"
+              android:hint="eg. Reading Lamp" />
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:layout_marginLeft="10dip"
+            android:text="Room:"
+            android:textSize="18dp"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="center_vertical"/>
+
+    <EditText android:id="@+id/input_room"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:inputType="text"
+              android:hint="eg. Study Room" />
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:layout_marginLeft="10dip"
+            android:text="Type:"
+            android:textSize="18dp"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="center_vertical"/>
+
+    <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/type_spinner"
+            android:prompt="@string/select_device_type"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="30dp"/>
+
+    <Button android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit" android:id="@+id/button_submit" android:layout_gravity="center_horizontal"/>
+
+</LinearLayout>

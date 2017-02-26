@@ -8,11 +8,14 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import company.whitespace.smartifyandroid.R;
+import company.whitespace.smartifyandroid.activity.SignupActivity;
 import company.whitespace.smartifyandroid.model.Device;
+import company.whitespace.smartifyandroid.networking.GetUpdatesAsyncTask;
 import company.whitespace.smartifyandroid.other.DevicesViewAdapter;
 
 import java.util.ArrayList;
@@ -34,7 +37,7 @@ public class DevicesFragment extends Fragment {
     private int mColumnCount = 1;
     private List<Device> devices = new ArrayList<Device>();
     private OnListFragmentInteractionListener mListener;
-
+    private String resp;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -61,7 +64,7 @@ public class DevicesFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
 
-        devices = getDevices();
+        devices = getDevices(getContext());
     }
 
     @Override
@@ -91,7 +94,6 @@ public class DevicesFragment extends Fragment {
         }
         return view;
     }
-
 
     @Override
     public void onAttach(Context context) {

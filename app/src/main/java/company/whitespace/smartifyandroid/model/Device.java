@@ -7,16 +7,15 @@ public class Device {
 
     private String name;
     private String room;
-    private int type;
+    private String type;
 
     public Device(String name, String room) {
         this.name = name;
-
         this.room = room;
-        this.type = 0;
+        this.type = null;
     }
 
-    public Device(String name, String room, int type) {
+    public Device(String name, String room, String type) {
         this.name = name;
         this.room = room;
         this.type = type;
@@ -30,7 +29,7 @@ public class Device {
         return room;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 

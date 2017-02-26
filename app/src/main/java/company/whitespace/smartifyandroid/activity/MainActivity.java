@@ -16,10 +16,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,9 +29,6 @@ import company.whitespace.smartifyandroid.model.Device;
 import company.whitespace.smartifyandroid.model.Room;
 import company.whitespace.smartifyandroid.networking.NetworkingAsyncTask;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity implements DevicesFragment.OnListFragmentInteractionListener, SensorsFragment.OnListFragmentInteractionListener {
 
     private NavigationView navigationView;
@@ -40,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
     //private ImageView imgNavHeaderBg, imgProfile;
     private TextView txtName, txtWebsite;
     private Toolbar toolbar;
-    private FloatingActionButton fab;
+    public FloatingActionButton fab;
 
     // urls to load navigation header background image
     // and profile image
@@ -50,11 +47,12 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
     public static int navItemIndex = 0;
 
     // tags used to attach the fragments
-    private static final String TAG_DEVICES = "devices";
-    private static final String TAG_SENSORS = "sensors";
-    private static final String TAG_CONTROL_DEVICE = "control device";
-    private static final String TAG_ADD_COMMAND = "add command";
-    private static final String TAG_MANAGE_GROUP = "manage group";
+    public static final String TAG_DEVICES = "devices";
+    public static final String TAG_SENSORS = "sensors";
+    public static final String TAG_CONTROL_DEVICE = "control device";
+    public static final String TAG_ADD_SCHEDULE = "add schedule";
+    public static final String TAG_ADD_CONDITION = "add condition";
+    public static final String TAG_MANAGE_GROUP = "manage group";
     private static final String TAG_SETTINGS = "settings";
     public static String CURRENT_TAG = TAG_DEVICES;
 
@@ -99,8 +97,15 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                // update the main content by replacing fragments
+                //MainActivity.CURRENT_TAG = MainActivity.TAG_ADD_SCHEDULE;
+
+                Fragment fragment = new AddDeviceFragment();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                        android.R.anim.fade_out);
+                fragmentTransaction.replace(R.id.frame, fragment, "add schedule");
+                fragmentTransaction.commit();
             }
         });
 
@@ -115,6 +120,14 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
             CURRENT_TAG = TAG_DEVICES;
             loadHomeFragment();
         }
+
+        findViewById(R.id.frame).addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
+                Log.i("DENEMEME",CURRENT_TAG);
+                toggleFab();
+            }
+        });
     }
 
     @Override
@@ -202,31 +215,26 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
     private Fragment getHomeFragment() {
         switch (navItemIndex) {
             case 0:
-                // home
                 DevicesFragment devicesFragment = new DevicesFragment();
                 return devicesFragment;
             case 1:
-                // photos
                 SensorsFragment sensorsFragment = new SensorsFragment();
                 return sensorsFragment;
             case 2:
-                // movies fragment
                 ControlDeviceFragment controlDeviceFragment = new ControlDeviceFragment();
                 return controlDeviceFragment;
             case 3:
-                // notifications fragment
-                AddCommandFragment addCommandFragment = new AddCommandFragment();
-                return addCommandFragment;
-
+                AddScheduleFragment addScheduleFragment = new AddScheduleFragment();
+                return addScheduleFragment;
             case 4:
-                // settings fragment
-                ManageGroupFragment manageGroupFragment = new ManageGroupFragment();
-                return manageGroupFragment;
-
+                AddConditionFragment addConditionFragment = new AddConditionFragment();
+                return addConditionFragment;
             case 5:
-                // settings fragment
                 SettingsFragment settingsFragment = new SettingsFragment();
                 return settingsFragment;
+            case 6:
+                ManageGroupFragment manageGroupFragment = new ManageGroupFragment();
+                return manageGroupFragment;
             default:
                 return new DevicesFragment();
         }
@@ -250,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
 
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {
-                    //Replacing the main content with ContentFragment Which is our Inbox View;
+                    //Replacing the main content with ContentFragment;
                     case R.id.nav_devices:
                         navItemIndex = 0;
                         CURRENT_TAG = TAG_DEVICES;
@@ -263,16 +271,20 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
                         navItemIndex = 2;
                         CURRENT_TAG = TAG_CONTROL_DEVICE;
                         break;
-                    case R.id.nav_add_command:
+                    case R.id.nav_add_schedule:
                         navItemIndex = 3;
-                        CURRENT_TAG = TAG_ADD_COMMAND;
+                        CURRENT_TAG = TAG_ADD_SCHEDULE;
+                        break;
+                    case R.id.nav_add_condition:
+                        navItemIndex = 4;
+                        CURRENT_TAG = TAG_ADD_CONDITION;
                         break;
                     case R.id.nav_manage_group:
-                        navItemIndex = 4;
+                        navItemIndex = 5;
                         CURRENT_TAG = TAG_MANAGE_GROUP;
                         break;
                     case R.id.nav_settings:
-                        navItemIndex = 5;
+                        navItemIndex = 6;
                         CURRENT_TAG = TAG_SETTINGS;
                         break;
                     default:
@@ -395,7 +407,7 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
 
     // show or hide the fab
     private void toggleFab() {
-        if (navItemIndex == 0)
+        if (CURRENT_TAG.equals(TAG_DEVICES))
             fab.show();
         else
             fab.hide();
