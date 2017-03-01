@@ -7,5 +7,6 @@
     <color name="white">#FFFFFF</color>
     <color name="red">#E84E40</color>
     <color name="yellow">#FFC400</color>
+    <color name="orange">#f57c00</color>
     <color name="green">#8EC436</color>
 </resources>

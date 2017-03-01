@@ -1,6 +1,8 @@
 <resources>
     <string name="domain">http://smartify.white-space.company/</string>
     <string name="networking_shared_preferences">networking</string>
+    <string name="devices_shared_preferences">devices</string>
+    <string name="sensors_shared_preferences">sensors</string>
 
     <string name="app_name">Smartify</string>
 
@@ -25,9 +27,10 @@
         <item>Devices</item>
         <item>Sensors</item>
         <item>Control Device</item>
-        <item>Add Command</item>
-        <item>Manage Group</item>
+        <item>Add Schedule</item>
+        <item>Add Condition</item>
         <item>Settings</item>
+        <item>Manage Group</item>
     </string-array>
 
     <string name="activity_title_about_us">About Us</string>
@@ -41,4 +44,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="select_device">Select device</string>
+    <string name="select_device_type">Select device type</string>
 </resources>

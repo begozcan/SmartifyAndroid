@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class SensorsViewAdapter extends RecyclerView.Adapter<SensorsViewAdapter.ViewHolder> {
 
-    private final List<Room> mValues;
+    private List<Room> mValues;
     private final OnListFragmentInteractionListener mListener;
 
     public SensorsViewAdapter(List<Room> items, OnListFragmentInteractionListener listener) {
@@ -59,6 +59,11 @@ public class SensorsViewAdapter extends RecyclerView.Adapter<SensorsViewAdapter.
         return mValues.size();
     }
 
+    public void updateList(List<Room> rooms) {
+        mValues = rooms;
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mRoomView;
@@ -81,4 +86,6 @@ public class SensorsViewAdapter extends RecyclerView.Adapter<SensorsViewAdapter.
             return super.toString() + " '" + mRoomView.getText() + "'";
         }
     }
+
+
 }

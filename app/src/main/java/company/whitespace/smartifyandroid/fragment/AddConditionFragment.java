@@ -15,12 +15,12 @@ import company.whitespace.smartifyandroid.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AddCommandFragment.OnFragmentInteractionListener} interface
+ * {@link AddScheduleFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link AddCommandFragment#newInstance} factory method to
+ * Use the {@link AddScheduleFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddCommandFragment extends Fragment {
+public class AddConditionFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
 
     // TODO: Rename and change types of parameters
@@ -28,7 +28,7 @@ public class AddCommandFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public AddCommandFragment() {
+    public AddConditionFragment() {
         // Required empty public constructor
     }
 
@@ -38,11 +38,11 @@ public class AddCommandFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AddCommandFragment.
+     * @return A new instance of fragment AddScheduleFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AddCommandFragment newInstance(String param1, String param2) {
-        AddCommandFragment fragment = new AddCommandFragment();
+    public static AddScheduleFragment newInstance(String param1, String param2) {
+        AddScheduleFragment fragment = new AddScheduleFragment();
         return fragment;
     }
 
@@ -65,7 +65,7 @@ public class AddCommandFragment extends Fragment {
         Log.d("DEVICE_ID", String.valueOf(deviceId));
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_command, container, false);
+        return inflater.inflate(R.layout.fragment_add_condition, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
