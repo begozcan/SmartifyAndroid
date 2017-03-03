@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import company.whitespace.smartifyandroid.R;
+import company.whitespace.smartifyandroid.activity.IRSetupActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,9 +13,15 @@ import org.json.JSONObject;
  * Created by begum on 26/12/16.
  */
 public class GetUpdatesAsyncTask extends NetworkingAsyncTask {
+    IRSetupActivity irSetupActivity;
 
     public GetUpdatesAsyncTask(Context context, String requestLink) {
         super(context, requestLink);
+    }
+
+    public GetUpdatesAsyncTask(IRSetupActivity irSetupActivity) {
+        super(irSetupActivity, "messages");
+        this.irSetupActivity = irSetupActivity;
     }
 
     @Override
@@ -39,6 +46,12 @@ public class GetUpdatesAsyncTask extends NetworkingAsyncTask {
                 switch (message.getString("Header")) {
                     case "sensor_values":
                         sensorEditor.putString(message.getJSONObject("Data").getString("name"), message.getString("Data"));
+                        break;
+                    case "IR_read_status":
+                        if (irSetupActivity != null) {
+                            irSetupActivity.updateStatus(message.getJSONObject("Data").getString("button"), message.getJSONObject("Data").getInt("status"));
+                            //TODO update the values
+                        }
                         break;
                     //TODO: Add device things
                 }

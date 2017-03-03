@@ -173,7 +173,7 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
             //TODO: Check type of device, show accordingly
             powerButton.setVisibility(View.VISIBLE);
 
-            if (devices.get(deviceId).getName() == "TV")
+            if (devices.get(deviceId).getType().equals("Universal Remote Unit"))
                 remoteButtons.setVisibility(View.VISIBLE);
             else
                 remoteButtons.setVisibility(View.INVISIBLE);

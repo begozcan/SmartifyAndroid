@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
     public static int navItemIndex = 0;
 
     // tags used to attach the fragments
+    public static final String TAG_ADD_DEVICE = "add_devices";
     public static final String TAG_DEVICES = "devices";
     public static final String TAG_SENSORS = "sensors";
     public static final String TAG_CONTROL_DEVICE = "control device";
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
             @Override
             public void onClick(View view) {
                 // update the main content by replacing fragments
-                //MainActivity.CURRENT_TAG = MainActivity.TAG_ADD_SCHEDULE;
+                MainActivity.CURRENT_TAG = MainActivity.TAG_ADD_DEVICE;
 
                 Fragment fragment = new AddDeviceFragment();
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
