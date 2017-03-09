@@ -27,7 +27,7 @@ import static company.whitespace.smartifyandroid.model.Devices.getDevices;
  * Use the {@link AddScheduleFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddScheduleFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
+public class AddScheduleFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
 
     // TODO: Rename and change types of parameters
