@@ -273,7 +273,7 @@ public class AddScheduleFragment extends Fragment {
     }
 
 
-    private void sendToServer(String time, boolean[] week) {
+    private void sendToServer(String time, boolean[] week, String deviceId, String actionName) {
         JSONArray condition = new JSONArray();
         JSONObject conditionObject = new JSONObject();
 
@@ -288,10 +288,20 @@ public class AddScheduleFragment extends Fragment {
         }
         condition.put(conditionObject);
 
+        JSONObject action = new JSONObject();
+
+        try {
+            action.put("Device_ID", deviceId);
+            action.put("Action", actionName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        
         JSONObject data = new JSONObject();
 
         try {
             data.put("Condition", condition);
+            data.put("Action", action);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -313,7 +323,7 @@ public class AddScheduleFragment extends Fragment {
         new GetUpdatesAsyncTask(AddScheduleFragment.this).execute(pairs);
     }
 
-    public void onSuccess(){
+    public void onSuccess() {
         MainActivity.CURRENT_TAG = MainActivity.TAG_DEVICES;
         // update the main content by replacing fragments
         Fragment fragment = new DevicesFragment();
