@@ -56,6 +56,12 @@
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="30dp"/>
 
+
+    <Button android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Configure" android:id="@+id/button_configure" android:layout_gravity="center_horizontal"
+            android:visibility="gone"/>
+
     <Button android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Submit" android:id="@+id/button_submit" android:layout_gravity="center_horizontal"/>

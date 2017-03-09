@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/activity_ir_setup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        tools:context="company.whitespace.smartifyandroid.activity.IRSetupActivity" android:orientation="vertical">
+
+    <TextView
+            android:text="Please point your remote control to IR Unit and press following button three times"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
+            android:id="@+id/info_test" android:textAlignment="center"/>
+    <TextView
+            android:text="ON"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:textAlignment="center"
+            android:layout_gravity="center_horizontal" android:layout_margin="20dp" android:textSize="170sp"
+            android:id="@+id/button_indicator"/>
+    <SeekBar
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="3"
+            android:progress="0"
+            android:id="@+id/progress"/>
+    <Button
+            android:text="Complete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/compelete" android:layout_marginTop="35dp"/>
+</LinearLayout>

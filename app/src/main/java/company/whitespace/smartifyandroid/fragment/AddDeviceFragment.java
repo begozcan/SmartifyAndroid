@@ -1,6 +1,7 @@
 package company.whitespace.smartifyandroid.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 
 import android.widget.*;
 import company.whitespace.smartifyandroid.R;
+import company.whitespace.smartifyandroid.activity.IRSetupActivity;
 import company.whitespace.smartifyandroid.activity.MainActivity;
 import company.whitespace.smartifyandroid.networking.DeviceAsyncTask;
 import company.whitespace.smartifyandroid.networking.GetUpdatesAsyncTask;
@@ -38,7 +40,7 @@ public class AddDeviceFragment extends Fragment implements AdapterView.OnItemSel
     private EditText deviceName;
     private EditText deviceRoom;
     private Spinner typeSpinner;
-    private Button submitButton;
+    private Button submitButton, configButton;
     private int type;
 
     public AddDeviceFragment() {
@@ -70,6 +72,7 @@ public class AddDeviceFragment extends Fragment implements AdapterView.OnItemSel
         deviceRoom = (EditText) view.findViewById(R.id.input_room);
         typeSpinner = (Spinner) view.findViewById(R.id.type_spinner);
         submitButton = (Button) view.findViewById(R.id.button_submit);
+        configButton = (Button) view.findViewById(R.id.button_configure);
 
         typeSpinner.setOnItemSelectedListener(this);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, types);
@@ -83,6 +86,14 @@ public class AddDeviceFragment extends Fragment implements AdapterView.OnItemSel
                 String room = deviceRoom.getText().toString();
                 if (name != null && room != null && type > -1)
                     sendToServer(name, room);
+            }
+        });
+
+        configButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent setup = new Intent(getActivity(), IRSetupActivity.class);
+                startActivity(setup);
             }
         });
 
@@ -127,6 +138,11 @@ public class AddDeviceFragment extends Fragment implements AdapterView.OnItemSel
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         type = position;
+        if (type == 3){
+            configButton.setVisibility(View.VISIBLE);
+        }else{
+            configButton.setVisibility(View.GONE);
+        }
     }
 
     @Override
