@@ -1,17 +1,27 @@
 package company.whitespace.smartifyandroid.fragment;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.*;
 import company.whitespace.smartifyandroid.R;
+import company.whitespace.smartifyandroid.activity.IRSetupActivity;
+import company.whitespace.smartifyandroid.activity.MainActivity;
 import company.whitespace.smartifyandroid.model.Device;
+import company.whitespace.smartifyandroid.networking.GetUpdatesAsyncTask;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +48,7 @@ public class AddScheduleFragment extends Fragment {
 
     private Spinner devicesSpinner;
     private Spinner actionSpinner;
-    private EditText time;
+    private TextView time;
 
     private ToggleButton mon;
     private ToggleButton tue;
@@ -51,6 +61,8 @@ public class AddScheduleFragment extends Fragment {
     private Button submit;
 
     private OnFragmentInteractionListener mListener;
+
+    private boolean[] week;
 
     public AddScheduleFragment() {
         // Required empty public constructor
@@ -74,7 +86,7 @@ public class AddScheduleFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        devices  = getDevices(getContext());
+        devices = getDevices(getContext());
         deviceId = -1;
         action = null;
         // TODO: Add other actions
@@ -90,7 +102,7 @@ public class AddScheduleFragment extends Fragment {
 
         devicesSpinner = (Spinner) view.findViewById(R.id.device_spinner);
         actionSpinner = (Spinner) view.findViewById(R.id.action_spinner);
-        time = (EditText) view.findViewById(R.id.time);
+        time = (TextView) view.findViewById(R.id.time);
         submit = (Button) view.findViewById(R.id.button_submit);
 
         mon = (ToggleButton) view.findViewById(R.id.mon_button);
@@ -101,9 +113,38 @@ public class AddScheduleFragment extends Fragment {
         sat = (ToggleButton) view.findViewById(R.id.sat_button);
         sun = (ToggleButton) view.findViewById(R.id.sun_button);
 
+        week = new boolean[7];
+
+        CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (compoundButton.getId() == R.id.mon_button)
+                    week[0] = b;
+                if (compoundButton.getId() == R.id.tue_button)
+                    week[1] = b;
+                if (compoundButton.getId() == R.id.wed_button)
+                    week[2] = b;
+                if (compoundButton.getId() == R.id.thu_button)
+                    week[3] = b;
+                if (compoundButton.getId() == R.id.fri_button)
+                    week[4] = b;
+                if (compoundButton.getId() == R.id.sat_button)
+                    week[5] = b;
+                if (compoundButton.getId() == R.id.sun_button)
+                    week[6] = b;
+            }
+        };
+        mon.setOnCheckedChangeListener(onCheckedChangeListener);
+        tue.setOnCheckedChangeListener(onCheckedChangeListener);
+        wed.setOnCheckedChangeListener(onCheckedChangeListener);
+        thu.setOnCheckedChangeListener(onCheckedChangeListener);
+        fri.setOnCheckedChangeListener(onCheckedChangeListener);
+        sat.setOnCheckedChangeListener(onCheckedChangeListener);
+        sun.setOnCheckedChangeListener(onCheckedChangeListener);
+
         Bundle bundle = this.getArguments();
 
-        if(bundle != null){
+        if (bundle != null) {
             deviceId = Integer.parseInt(bundle.getString("device_id"));
         }
 
@@ -158,10 +199,23 @@ public class AddScheduleFragment extends Fragment {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            //TODO: Check and send to server
+                sendToServer(time.getText().toString(), week);
             }
         });
 
+        time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog timePicker = new TimePickerDialog(getActivity(), R.style.AppTheme_Dialog, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                        time.setText(i + ":" + i1);
+                    }
+                }, 10, 10, true);
+
+                timePicker.show();
+            }
+        });
 
         return view;
     }
@@ -194,7 +248,7 @@ public class AddScheduleFragment extends Fragment {
     public List<String> toStringList(List list) {
         List<String> stringList = new ArrayList<String>();
 
-        for (int i = 0; i < list.size() ; i++) {
+        for (int i = 0; i < list.size(); i++) {
             stringList.add(list.get(i).toString());
         }
 
@@ -215,5 +269,67 @@ public class AddScheduleFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+
+    private void sendToServer(String time, boolean[] week, String deviceId, String actionName) {
+        JSONArray condition = new JSONArray();
+        JSONObject conditionObject = new JSONObject();
+
+        try {
+            conditionObject.put("type", "time");
+            conditionObject.put("time", time);
+            for (int i = 0; i < 7; i++) {
+                conditionObject.put("day#" + i, week[i]);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        condition.put(conditionObject);
+
+        JSONObject action = new JSONObject();
+
+        try {
+            action.put("Device_ID", deviceId);
+            action.put("Action", actionName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        
+        JSONObject data = new JSONObject();
+
+        try {
+            data.put("Condition", condition);
+            data.put("Action", action);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("Header", "add_command");
+            obj.put("Data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        JSONArray message = new JSONArray();
+        message.put(obj);
+
+        Pair<String, String>[] pairs = new Pair[1];
+        pairs[0] = new Pair<>("message", message.toString());
+        Log.i("Message", message.toString());
+        new GetUpdatesAsyncTask(AddScheduleFragment.this).execute(pairs);
+    }
+
+    public void onSuccess() {
+        MainActivity.CURRENT_TAG = MainActivity.TAG_DEVICES;
+        // update the main content by replacing fragments
+        Fragment fragment = new DevicesFragment();
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                android.R.anim.fade_out);
+        fragmentTransaction.replace(R.id.frame, fragment, "devices");
+        fragmentTransaction.commit();
     }
 }

@@ -32,19 +32,25 @@
                 android:name=".activity.ForgotPasswordActivity"
                 android:theme="@style/AppTheme.Dark">
         </activity>
-        <activity android:name=".activity.ConfirmSignupActivity"
-                  android:theme="@style/AppTheme.Dark">
+        <activity
+                android:name=".activity.ConfirmSignupActivity"
+                android:theme="@style/AppTheme.Dark">
             <intent-filter android:label="Activation">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
                 <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
-                <data android:scheme="http"
-                      android:host="smartify.white-space.company"/>
+                <data
+                        android:host="smartify.white-space.company"
+                        android:scheme="http"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.NewPasswordActivity"
-                  android:theme="@style/AppTheme.Dark">
+        <activity
+                android:name=".activity.NewPasswordActivity"
+                android:theme="@style/AppTheme.Dark">
+        </activity>
+        <activity android:name=".activity.IRSetupActivity">
         </activity>
     </application>
 
