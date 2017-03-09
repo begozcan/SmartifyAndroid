@@ -9,8 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.*;
 import company.whitespace.smartifyandroid.R;
+import company.whitespace.smartifyandroid.model.Device;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static company.whitespace.smartifyandroid.model.Devices.getDevices;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,10 +27,19 @@ import company.whitespace.smartifyandroid.R;
  * create an instance of this fragment.
  */
 public class AddConditionFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-
-    // TODO: Rename and change types of parameters
     private int deviceId;
+    private String action;
+    private String condition;
+
+    private List<Device> devices = new ArrayList<Device>();
+    private List<String> actions = new ArrayList<String>();
+    private List<String> conditions = new ArrayList<String>();
+
+    private Spinner devicesSpinner;
+    private Spinner actionSpinner;
+    private Spinner conditionSpinner;
+    private EditText value;
+    private Button submit;
 
     private OnFragmentInteractionListener mListener;
 
@@ -49,23 +64,113 @@ public class AddConditionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        devices  = getDevices(getContext());
 
+        deviceId = -1;
+        action = null;
+        condition = null;
+
+        // TODO: Add other actions
+        actions.add("Select one...");
+        actions.add("Turn On/Off");
+
+        conditions.add("Select one...");
+        conditions.add("Temperature");
+        conditions.add("Light");
+        conditions.add("Humidity");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Bundle bundle = this.getArguments();
+        View view = inflater.inflate(R.layout.fragment_add_condition, container, false);
 
+        devicesSpinner = (Spinner) view.findViewById(R.id.device_spinner);
+        actionSpinner = (Spinner) view.findViewById(R.id.action_spinner);
+        conditionSpinner = (Spinner) view.findViewById(R.id.condition_spinner);
+        value = (EditText) view.findViewById(R.id.value);
+        submit = (Button) view.findViewById(R.id.button_submit);
+
+        Bundle bundle = this.getArguments();
         if(bundle != null){
             deviceId = Integer.parseInt(bundle.getString("device_id"));
         }
 
-        Log.d("DEVICE_ID", String.valueOf(deviceId));
+        List<String> devices_str = toStringList(devices);
+        devicesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+             @Override
+             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                 deviceId = position - 1;
+                 Log.d("DEVICE_ID", String.valueOf(deviceId));
+                 String item = parent.getItemAtPosition(position).toString();
+                 if (position > 0) {
+                     // Showing selected spinner item
+                     Toast.makeText(parent.getContext(), "Device: " + item, Toast.LENGTH_LONG).show();
+                 }
+             }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                devicesSpinner.setSelection(0);
+            }
+        });
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_condition, container, false);
+        ArrayAdapter<String> deviceAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, devices_str);
+        deviceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        devicesSpinner.setAdapter(deviceAdapter);
+
+        if (deviceId != -1) {
+            devicesSpinner.setSelection(deviceId + 1);
+        }
+
+        actionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                action = parent.getItemAtPosition(position).toString();
+                if (position > 0) {
+                    // Showing selected spinner item
+                    Toast.makeText(parent.getContext(), "Action: " + action, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                actionSpinner.setSelection(0);
+            }
+        });
+
+        ArrayAdapter<String> actionAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, actions);
+        actionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        actionSpinner.setAdapter(actionAdapter);
+
+        conditionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                condition = parent.getItemAtPosition(position).toString();
+                if (position > 0) {
+                    // Showing selected spinner item
+                    Toast.makeText(parent.getContext(), "Condition: " + condition, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                conditionSpinner.setSelection(0);
+            }
+        });
+
+        ArrayAdapter<String> conditionAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, conditions);
+        conditionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        conditionSpinner.setAdapter(conditionAdapter);
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: Check and send to server
+            }
+        });
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -90,6 +195,18 @@ public class AddConditionFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    // Convert list to String list for spinner
+    public List<String> toStringList(List list) {
+        List<String> stringList = new ArrayList<String>();
+
+        for (int i = 0; i < list.size() ; i++) {
+            stringList.add(list.get(i).toString());
+        }
+
+        stringList.add(0, "Select one...");
+        return stringList;
     }
 
     /**
