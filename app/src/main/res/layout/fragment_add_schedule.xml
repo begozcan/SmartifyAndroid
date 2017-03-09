@@ -2,12 +2,160 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.AddScheduleFragment">
+    tools:context=".fragment.AddScheduleFragment"
+    android:orientation="vertical"
+    android:padding="10dp">
 
-    !-- TODO: Update blank fragment layout -->
     <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:text="Select device:"
+            android:textSize="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="center_vertical"/>
+    <Spinner
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Add Schedule Fragment"/>
+            android:layout_height="wrap_content"
+            android:id="@+id/device_spinner"
+            android:prompt="@string/select_device"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="30dp"/>
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:text="Select action:"
+            android:textSize="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="center_vertical"/>
+
+    <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/action_spinner"
+            android:prompt="@string/select_device"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="30dp"/>
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:text="Time:"
+            android:textSize="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="center_vertical"/>
+
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="time"
+            android:ems="10"
+            android:id="@+id/time"
+            android:layout_marginBottom="30dp"/>
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:text="Repeat?"
+            android:textSize="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="center_vertical"/>
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+        <ToggleButton
+                android:text="ToggleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/mon_button"
+                android:textColorLink="@android:color/white"
+                android:textColor="@color/white"
+                android:textOff="Mon"
+                android:textOn="Mon"/>
+
+        <ToggleButton
+                android:text="ToggleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tue_button"
+                android:textColorLink="@android:color/white"
+                android:textColor="@color/white"
+                android:textOff="Tue"
+                android:textOn="Tue"/>
+
+        <ToggleButton
+                android:text="ToggleButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/wed_button"
+                android:textColorLink="@android:color/white"
+                android:textColor="@color/white"
+                android:textOff="Wed"
+                android:textOn="Wed"/>
+
+        <ToggleButton
+                android:text="ToggleButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/thu_button"
+                android:textColorLink="@android:color/white"
+                android:textColor="@color/white"
+                android:textOff="Thu"
+                android:textOn="Thu"/>
+
+    </LinearLayout>
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+        <ToggleButton
+                android:text="ToggleButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/fri_button"
+                android:textColorLink="@android:color/white"
+                android:textColor="@color/white"
+                android:textOff="Fri"
+                android:textOn="Fri"/>
+
+        <ToggleButton
+                android:text="ToggleButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/sat_button"
+                android:textColorLink="@android:color/white"
+                android:textColor="@color/white"
+                android:textOff="Sat"
+                android:textOn="Sat"/>
+
+        <ToggleButton
+                android:text="ToggleButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/sun_button"
+                android:textColorLink="@android:color/white"
+                android:textColor="@color/white"
+                android:textOff="Sun"
+                android:textOn="Sun"/>
+
+    </LinearLayout>
+
+    <Button android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:id="@+id/button_submit"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"/>
+
 
 </LinearLayout>
