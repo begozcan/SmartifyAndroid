@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.activity.IRSetupActivity;
+import company.whitespace.smartifyandroid.fragment.AddScheduleFragment;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,6 +15,7 @@ import org.json.JSONObject;
  */
 public class GetUpdatesAsyncTask extends NetworkingAsyncTask {
     IRSetupActivity irSetupActivity;
+    AddScheduleFragment addScheduleFragment;
 
     public GetUpdatesAsyncTask(Context context, String requestLink) {
         super(context, requestLink);
@@ -24,6 +26,11 @@ public class GetUpdatesAsyncTask extends NetworkingAsyncTask {
         this.irSetupActivity = irSetupActivity;
     }
 
+    public GetUpdatesAsyncTask(AddScheduleFragment addScheduleFragment) {
+        super(addScheduleFragment.getActivity(), "messages");
+        this.addScheduleFragment = addScheduleFragment;
+    }
+
     @Override
     public void onSessionFail() {
         Log.d("UPDATE", "Failed");
@@ -32,6 +39,10 @@ public class GetUpdatesAsyncTask extends NetworkingAsyncTask {
     @Override
     public void onSuccess() {
         Log.d("UPDATE", "Success");
+
+        if (addScheduleFragment != null){
+            addScheduleFragment.onSuccess();
+        }
 
         SharedPreferences sensorSharedPref = context.getSharedPreferences(context.getString(R.string.sensors_shared_preferences), Context.MODE_PRIVATE);
         SharedPreferences.Editor sensorEditor = sensorSharedPref.edit();
@@ -50,7 +61,6 @@ public class GetUpdatesAsyncTask extends NetworkingAsyncTask {
                     case "IR_read_status":
                         if (irSetupActivity != null) {
                             irSetupActivity.updateStatus(message.getJSONObject("Data").getString("button"), message.getJSONObject("Data").getInt("status"));
-                            //TODO update the values
                         }
                         break;
                     //TODO: Add device things
