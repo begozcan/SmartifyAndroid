@@ -4,14 +4,21 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.*;
 import company.whitespace.smartifyandroid.R;
+import company.whitespace.smartifyandroid.activity.MainActivity;
 import company.whitespace.smartifyandroid.model.Device;
+import company.whitespace.smartifyandroid.networking.GetUpdatesAsyncTask;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,12 +108,11 @@ public class AddConditionFragment extends Fragment {
         devicesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
              @Override
              public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                 deviceId = position - 1;
-                 Log.d("DEVICE_ID", String.valueOf(deviceId));
-                 String item = parent.getItemAtPosition(position).toString();
                  if (position > 0) {
-                     // Showing selected spinner item
-                     Toast.makeText(parent.getContext(), "Device: " + item, Toast.LENGTH_LONG).show();
+                     deviceId = position - 1;
+                 }
+                 else if (position == 0) {
+                     deviceId = -1;
                  }
              }
             @Override
@@ -126,10 +132,11 @@ public class AddConditionFragment extends Fragment {
         actionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                action = parent.getItemAtPosition(position).toString();
                 if (position > 0) {
-                    // Showing selected spinner item
-                    Toast.makeText(parent.getContext(), "Action: " + action, Toast.LENGTH_LONG).show();
+                    action = parent.getItemAtPosition(position).toString();
+                }
+                else if (position == 0) {
+                    action = null;
                 }
             }
 
@@ -146,10 +153,11 @@ public class AddConditionFragment extends Fragment {
         conditionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                condition = parent.getItemAtPosition(position).toString();
                 if (position > 0) {
-                    // Showing selected spinner item
-                    Toast.makeText(parent.getContext(), "Condition: " + condition, Toast.LENGTH_LONG).show();
+                    condition = parent.getItemAtPosition(position).toString();
+                }
+                else if (position == 0) {
+                    condition = null;
                 }
             }
 
@@ -166,7 +174,8 @@ public class AddConditionFragment extends Fragment {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Check and send to server
+                //TODO: Null check
+                sendToServer(condition, value.getText().toString(), devices.get(deviceId).getName(), action);
             }
         });
 
@@ -207,6 +216,65 @@ public class AddConditionFragment extends Fragment {
 
         stringList.add(0, "Select one...");
         return stringList;
+    }
+
+    private void sendToServer(String conditionType, String value, String deviceId, String actionName) {
+        JSONArray condition = new JSONArray();
+        JSONObject conditionObject = new JSONObject();
+
+        try {
+            conditionObject.put("type", "condition");
+            conditionObject.put("Condition_Type", conditionType);
+            conditionObject.put("Value", value);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        condition.put(conditionObject);
+
+        JSONObject action = new JSONObject();
+
+        try {
+            action.put("Device_ID", deviceId);
+            action.put("Action", actionName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject data = new JSONObject();
+
+        try {
+            data.put("Condition", condition);
+            data.put("Action", action);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("Header", "add_command");
+            obj.put("Data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        JSONArray message = new JSONArray();
+        message.put(obj);
+
+        Pair<String, String>[] pairs = new Pair[1];
+        pairs[0] = new Pair<>("message", message.toString());
+        Log.i("Message", message.toString());
+        new GetUpdatesAsyncTask(AddConditionFragment.this).execute(pairs);
+    }
+
+    public void onSuccess() {
+        MainActivity.CURRENT_TAG = MainActivity.TAG_DEVICES;
+        // update the main content by replacing fragments
+        Fragment fragment = new DevicesFragment();
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                android.R.anim.fade_out);
+        fragmentTransaction.replace(R.id.frame, fragment, "devices");
+        fragmentTransaction.commit();
     }
 
     /**
