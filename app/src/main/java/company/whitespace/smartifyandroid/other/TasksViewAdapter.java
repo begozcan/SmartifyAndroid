@@ -1,30 +1,18 @@
 package company.whitespace.smartifyandroid.other;
 
 import android.content.Context;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 import company.whitespace.smartifyandroid.R;
-import company.whitespace.smartifyandroid.activity.MainActivity;
-import company.whitespace.smartifyandroid.fragment.AddConditionFragment;
-import company.whitespace.smartifyandroid.fragment.AddScheduleFragment;
-import company.whitespace.smartifyandroid.fragment.ControlDeviceFragment;
-import company.whitespace.smartifyandroid.fragment.DevicesFragment;
-import company.whitespace.smartifyandroid.fragment.DevicesFragment.OnListFragmentInteractionListener;
-import company.whitespace.smartifyandroid.model.Device;
-import company.whitespace.smartifyandroid.networking.DeviceAsyncTask;
+import company.whitespace.smartifyandroid.model.Task;
 
 import java.util.List;
-
+import company.whitespace.smartifyandroid.fragment.TasksFragment.OnListFragmentInteractionListener;
 /**
  * {@link RecyclerView.Adapter} makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
@@ -32,13 +20,13 @@ import java.util.List;
  */
 public class TasksViewAdapter extends RecyclerView.Adapter<TasksViewAdapter.ViewHolder> {
 
-    private final List<Device> mDevices;
+    private final List<Task> mTasks;
     private final OnListFragmentInteractionListener mListener;
     private final FragmentManager fragmentManager;
     private Context context;
 
-    public TasksViewAdapter(List<Device> devices, OnListFragmentInteractionListener listener, FragmentManager fragmentManager) {
-        mDevices = devices;
+    public TasksViewAdapter(List<Task> tasks, OnListFragmentInteractionListener listener, FragmentManager fragmentManager) {
+        mTasks = tasks;
         mListener = listener;
         this.fragmentManager = fragmentManager;
     }
@@ -53,9 +41,9 @@ public class TasksViewAdapter extends RecyclerView.Adapter<TasksViewAdapter.View
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.mItem = mDevices.get(position);
-        holder.deviceName.setText(mDevices.get(position).getName());
-        holder.deviceRoom.setText(mDevices.get(position).getRoom());
+        holder.mItem = mTasks.get(position);
+        holder.type.setText(mTasks.get(position).getType());
+        holder.explanation.setText(mTasks.get(position).getExplanation());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,51 +80,36 @@ public class TasksViewAdapter extends RecyclerView.Adapter<TasksViewAdapter.View
 
     @Override
     public int getItemCount() {
-        return mDevices.size();
+        return mTasks.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public Device mItem;
+        public Task mItem;
 
-        TextView deviceName;
-        TextView deviceRoom;
+        TextView type;
+        TextView explanation;
 
-        View btnOpen;
+        View btnEdit;
         View btnDelete;
-        View btnAddSchedule;
-        View btnAddCond;
         SwipeHorizontalMenuLayout sml;
 
         public ViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
-            deviceName = (TextView) itemView.findViewById(R.id.device_name);
-            deviceRoom = (TextView) itemView.findViewById(R.id.device_room);
+            type = (TextView) itemView.findViewById(R.id.device_name);
+            explanation = (TextView) itemView.findViewById(R.id.device_room);
 
-            btnOpen = itemView.findViewById(R.id.btOpen);
+            btnEdit = itemView.findViewById(R.id.bt_Edit);
             btnDelete = itemView.findViewById(R.id.btDelete);
-            btnAddSchedule = itemView.findViewById(R.id.bt_AddSchedule);
-            btnAddCond = itemView.findViewById(R.id.bt_AddCond);
             sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
 
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + deviceName.getText() + "'";
+            return super.toString() + " '" + type.getText() + "'";
         }
 
-    }
-
-    public void onSuccess(){
-        MainActivity.CURRENT_TAG = MainActivity.TAG_DEVICES;
-        // update the main content by replacing fragments
-        Fragment fragment = new DevicesFragment();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
-                android.R.anim.fade_out);
-        fragmentTransaction.replace(R.id.frame, fragment, "devices");
-        fragmentTransaction.commit();
     }
 }

@@ -12,14 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.model.Device;
-import company.whitespace.smartifyandroid.other.DevicesViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static company.whitespace.smartifyandroid.model.Devices.getDevices;
 
-import company.whitespace.smartifyandroid.fragment.DevicesFragment.OnListFragmentInteractionListener;
+import company.whitespace.smartifyandroid.model.Task;
 import company.whitespace.smartifyandroid.other.TasksViewAdapter;
 
 /**
@@ -34,7 +33,7 @@ public class TasksFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private List<Device> devices = new ArrayList<Device>();
+    private List<Task> tasks = new ArrayList<Task>();
     private OnListFragmentInteractionListener mListener;
     private String resp;
 
@@ -63,7 +62,10 @@ public class TasksFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
 
-        devices = getDevices(getContext());
+        tasks.add(new Task("Conditonal", "If Light is 5"));
+        tasks.add(new Task("Conditonal", "If Humidity is 20"));
+        tasks.add(new Task("Scheduled", "All week days at 20:30"));
+        tasks.add(new Task("Scheduled", "MON,TUE,WED at 07:30"));
     }
 
     @Override
@@ -79,15 +81,14 @@ public class TasksFragment extends Fragment {
 
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            }
-            else {
+            } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            recyclerView.setAdapter(new TasksViewAdapter(devices, mListener, getActivity().getSupportFragmentManager()));
+            recyclerView.setAdapter(new TasksViewAdapter(tasks, mListener, getActivity().getSupportFragmentManager()));
 
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                DividerItemDecoration.VERTICAL);
+                    DividerItemDecoration.VERTICAL);
             recyclerView.addItemDecoration(dividerItemDecoration);
 
         }
@@ -111,4 +112,9 @@ public class TasksFragment extends Fragment {
         mListener = null;
     }
 
+
+    public interface OnListFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onListFragmentInteraction(Task task);
+    }
 }

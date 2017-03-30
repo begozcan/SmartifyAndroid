@@ -27,9 +27,10 @@ import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.fragment.*;
 import company.whitespace.smartifyandroid.model.Device;
 import company.whitespace.smartifyandroid.model.Room;
+import company.whitespace.smartifyandroid.model.Task;
 import company.whitespace.smartifyandroid.networking.NetworkingAsyncTask;
 
-public class MainActivity extends AppCompatActivity implements DevicesFragment.OnListFragmentInteractionListener, SensorsFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements TasksFragment.OnListFragmentInteractionListener, DevicesFragment.OnListFragmentInteractionListener, SensorsFragment.OnListFragmentInteractionListener {
 
     private NavigationView navigationView;
     private DrawerLayout drawer;
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
         findViewById(R.id.frame).addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
-                Log.i("DENEMEME",CURRENT_TAG);
+                Log.i("DENEMEME", CURRENT_TAG);
                 toggleFab();
             }
         });
@@ -431,6 +432,11 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
     // Sensors
     @Override
     public void onListFragmentInteraction(Room room) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(Task task) {
 
     }
 
