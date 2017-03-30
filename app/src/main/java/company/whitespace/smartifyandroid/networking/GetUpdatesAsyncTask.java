@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.activity.IRSetupActivity;
+import company.whitespace.smartifyandroid.fragment.AddConditionFragment;
 import company.whitespace.smartifyandroid.fragment.AddScheduleFragment;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +17,7 @@ import org.json.JSONObject;
 public class GetUpdatesAsyncTask extends NetworkingAsyncTask {
     IRSetupActivity irSetupActivity;
     AddScheduleFragment addScheduleFragment;
+    AddConditionFragment addConditionFragment;
 
     public GetUpdatesAsyncTask(Context context, String requestLink) {
         super(context, requestLink);
@@ -31,6 +33,11 @@ public class GetUpdatesAsyncTask extends NetworkingAsyncTask {
         this.addScheduleFragment = addScheduleFragment;
     }
 
+    public GetUpdatesAsyncTask(AddConditionFragment addConditionFragment) {
+        super(addConditionFragment.getActivity(), "messages");
+        this.addConditionFragment = addConditionFragment;
+    }
+
     @Override
     public void onSessionFail() {
         Log.d("UPDATE", "Failed");
@@ -42,6 +49,10 @@ public class GetUpdatesAsyncTask extends NetworkingAsyncTask {
 
         if (addScheduleFragment != null){
             addScheduleFragment.onSuccess();
+        }
+
+        if (addConditionFragment != null){
+            addConditionFragment.onSuccess();
         }
 
         SharedPreferences sensorSharedPref = context.getSharedPreferences(context.getString(R.string.sensors_shared_preferences), Context.MODE_PRIVATE);
