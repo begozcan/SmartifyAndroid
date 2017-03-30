@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
     public static final String TAG_CONTROL_DEVICE = "control device";
     public static final String TAG_ADD_SCHEDULE = "add schedule";
     public static final String TAG_ADD_CONDITION = "add condition";
+    public static final String TAG_TASKS = "tasks";
     public static final String TAG_MANAGE_GROUP = "manage group";
     private static final String TAG_SETTINGS = "settings";
     public static String CURRENT_TAG = TAG_DEVICES;
@@ -236,6 +237,9 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
             case 6:
                 ManageGroupFragment manageGroupFragment = new ManageGroupFragment();
                 return manageGroupFragment;
+            case 7:
+                TasksFragment tasks = new TasksFragment();
+                return tasks;
             default:
                 return new DevicesFragment();
         }
@@ -287,6 +291,10 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
                     case R.id.nav_settings:
                         navItemIndex = 6;
                         CURRENT_TAG = TAG_SETTINGS;
+                        break;
+                    case R.id.nav_tasks:
+                        navItemIndex = 7;
+                        CURRENT_TAG = TAG_TASKS;
                         break;
                     default:
                         navItemIndex = 0;
