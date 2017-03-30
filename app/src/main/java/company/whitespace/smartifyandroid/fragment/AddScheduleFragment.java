@@ -154,12 +154,11 @@ public class AddScheduleFragment extends Fragment {
         devicesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                deviceId = position - 1;
-                Log.d("DEVICE_ID", String.valueOf(deviceId));
-                String item = parent.getItemAtPosition(position).toString();
                 if (position > 0) {
-                    // Showing selected spinner item
-                    Toast.makeText(parent.getContext(), "Device: " + item, Toast.LENGTH_LONG).show();
+                    deviceId = position - 1;
+                }
+                else if (position == 0) {
+                    deviceId = -1;
                 }
             }
 
@@ -180,10 +179,11 @@ public class AddScheduleFragment extends Fragment {
         actionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                action = parent.getItemAtPosition(position).toString();
                 if (position > 0) {
-                    // Showing selected spinner item
-                    Toast.makeText(parent.getContext(), "Action: " + action, Toast.LENGTH_LONG).show();
+                    action = parent.getItemAtPosition(position).toString();
+                }
+                else if (position == 0) {
+                    action = null;
                 }
             }
 
@@ -199,7 +199,8 @@ public class AddScheduleFragment extends Fragment {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendToServer(time.getText().toString(), week);
+                //TODO: Null check
+                sendToServer(time.getText().toString(), week, devices.get(deviceId).getName(), action);
             }
         });
 
@@ -256,7 +257,6 @@ public class AddScheduleFragment extends Fragment {
         return stringList;
     }
 
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -271,7 +271,6 @@ public class AddScheduleFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
 
     private void sendToServer(String time, boolean[] week, String deviceId, String actionName) {
         JSONArray condition = new JSONArray();
