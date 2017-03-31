@@ -27,9 +27,10 @@ import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.fragment.*;
 import company.whitespace.smartifyandroid.model.Device;
 import company.whitespace.smartifyandroid.model.Room;
+import company.whitespace.smartifyandroid.model.Task;
 import company.whitespace.smartifyandroid.networking.NetworkingAsyncTask;
 
-public class MainActivity extends AppCompatActivity implements DevicesFragment.OnListFragmentInteractionListener, SensorsFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements TasksFragment.OnListFragmentInteractionListener, DevicesFragment.OnListFragmentInteractionListener, SensorsFragment.OnListFragmentInteractionListener {
 
     private NavigationView navigationView;
     private DrawerLayout drawer;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
     public static final String TAG_CONTROL_DEVICE = "control device";
     public static final String TAG_ADD_SCHEDULE = "add schedule";
     public static final String TAG_ADD_CONDITION = "add condition";
+    public static final String TAG_TASKS = "tasks";
     public static final String TAG_MANAGE_GROUP = "manage group";
     private static final String TAG_SETTINGS = "settings";
     public static String CURRENT_TAG = TAG_DEVICES;
@@ -125,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
         findViewById(R.id.frame).addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
-                Log.i("DENEMEME",CURRENT_TAG);
+                Log.i("DENEMEME", CURRENT_TAG);
                 toggleFab();
             }
         });
@@ -236,6 +238,9 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
             case 6:
                 ManageGroupFragment manageGroupFragment = new ManageGroupFragment();
                 return manageGroupFragment;
+            case 7:
+                TasksFragment tasks = new TasksFragment();
+                return tasks;
             default:
                 return new DevicesFragment();
         }
@@ -287,6 +292,10 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
                     case R.id.nav_settings:
                         navItemIndex = 6;
                         CURRENT_TAG = TAG_SETTINGS;
+                        break;
+                    case R.id.nav_tasks:
+                        navItemIndex = 7;
+                        CURRENT_TAG = TAG_TASKS;
                         break;
                     default:
                         navItemIndex = 0;
@@ -423,6 +432,11 @@ public class MainActivity extends AppCompatActivity implements DevicesFragment.O
     // Sensors
     @Override
     public void onListFragmentInteraction(Room room) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(Task task) {
 
     }
 
