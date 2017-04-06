@@ -1,7 +1,10 @@
 package company.whitespace.smartifyandroid.other;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 import company.whitespace.smartifyandroid.R;
+import company.whitespace.smartifyandroid.activity.MainActivity;
+import company.whitespace.smartifyandroid.fragment.AddConditionFragment;
+import company.whitespace.smartifyandroid.fragment.AddScheduleFragment;
 import company.whitespace.smartifyandroid.model.Task;
 
 import java.util.List;
@@ -73,7 +79,6 @@ public class TasksViewAdapter extends RecyclerView.Adapter<TasksViewAdapter.View
 ////                deviceAsyncTask.execute(pairs);
 //            }
 //        });
-
 
         holder.sml.setSwipeEnable(true);
     }
