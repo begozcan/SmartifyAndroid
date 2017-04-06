@@ -323,8 +323,8 @@ public class AddScheduleFragment extends Fragment {
         new GetUpdatesAsyncTask(AddScheduleFragment.this).execute(pairs);
 
         String[] times = time.split(":");
-        pairs = new Pair[5];
-        pairs[0] = new Pair<>("type", "Conditional Task");
+        pairs = new Pair[6];
+        pairs[0] = new Pair<>("type", "Scheduled Task");
         pairs[1] = new Pair<>("device_name", deviceId);
         pairs[2] = new Pair<>("action_name", actionName);
         pairs[3] = new Pair<>("hour", times[0]);
