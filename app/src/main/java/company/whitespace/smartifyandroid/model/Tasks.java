@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.util.Pair;
 import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.networking.DeviceAsyncTask;
+import company.whitespace.smartifyandroid.networking.TaskAsyncTask;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -25,17 +26,17 @@ public class Tasks {
         pairs[2] = new Pair<>("action_name", "----------");
         pairs[3] = new Pair<>("sensor_type", "----------");
         pairs[4] = new Pair<>("threshold", "----------");
-        new DeviceAsyncTask(context, "devices_remove").execute(pairs);
+        new TaskAsyncTask(context, "tasks_remove").execute(pairs);
 
         SharedPreferences deviceSharedPref = context.getSharedPreferences(context.getString(R.string.tasks_shared_preferences), Context.MODE_PRIVATE);
 
         for (String key : deviceSharedPref.getAll().keySet()) {
             try {
                 JSONArray arr = new JSONArray(deviceSharedPref.getString(key, ""));
-                if (arr.getString(1).equals("Conditional Tasks"))
-                    tasks.add(new ConditionalTask(arr.getString(2), arr.getString(3), arr.getString(4), arr.getDouble(5)));
+                if (arr.getString(1).equals("Conditional Task"))
+                    tasks.add(new ConditionalTask(arr.getString(2), arr.getString(3), arr.getString(4), arr.getString(5)));
                 else
-                    tasks.add(new ScheduledTask(arr.getString(2), arr.getString(3), arr.getInt(4), arr.getInt(5), (boolean[]) arr.get(6)));
+                    tasks.add(new ScheduledTask(arr.getString(2), arr.getString(3), arr.getString(4), arr.getString(5), arr.getString(0)));
 
             } catch (JSONException e) {
                 e.printStackTrace();

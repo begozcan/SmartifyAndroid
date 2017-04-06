@@ -7,6 +7,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.model.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static company.whitespace.smartifyandroid.model.Devices.getDevices;
@@ -41,6 +43,7 @@ public class TasksFragment extends Fragment {
      * fragment (e.g. upon screen orientation changes).
      */
     public TasksFragment() {
+        tasks = Tasks.getTasks(getContext());
     }
 
     // TODO: Customize parameter initialization
@@ -61,7 +64,7 @@ public class TasksFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
 
-        tasks = Tasks.getTasks(getContext());
+        Log.i("TASKS,string", tasks.toString());
     }
 
     @Override

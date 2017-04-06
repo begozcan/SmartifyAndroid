@@ -2,9 +2,9 @@ package company.whitespace.smartifyandroid.model;
 
 public class ConditionalTask extends Task {
     private String sensorType;
-    private double threshold;
+    private String threshold;
 
-    public ConditionalTask(String deviceName, String actionName, String sensorType, double threshold) {
+    public ConditionalTask(String deviceName, String actionName, String sensorType, String threshold) {
         super(deviceName, actionName, "Conditional Task");
         this.sensorType = sensorType;
         this.threshold = threshold;
@@ -18,11 +18,11 @@ public class ConditionalTask extends Task {
         this.sensorType = sensorType;
     }
 
-    public double getThreshold() {
+    public String getThreshold() {
         return threshold;
     }
 
-    public void setThreshold(double threshold) {
+    public void setThreshold(String threshold) {
         this.threshold = threshold;
     }
 

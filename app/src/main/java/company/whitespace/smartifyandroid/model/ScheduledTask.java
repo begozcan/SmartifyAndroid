@@ -4,38 +4,38 @@ package company.whitespace.smartifyandroid.model;
  * Created by Alchemistake on 06/04/2017.
  */
 public class ScheduledTask extends Task{
-    private int hour;
-    private int minute;
-    private boolean[] repeatdays;
+    private String hour;
+    private String minute;
+    private String repeatdays;
 
-    public ScheduledTask(String deviceName, String actionName, int hour, int minute, boolean[] repeatdays) {
+    public ScheduledTask(String deviceName, String actionName, String hour, String minute, String repeatdays) {
         super(deviceName, actionName, "Scheduled Task");
         this.hour = hour;
         this.minute = minute;
         this.repeatdays = repeatdays;
     }
 
-    public int getHour() {
+    public String getHour() {
         return hour;
     }
 
-    public void setHour(int hour) {
+    public void setHour(String hour) {
         this.hour = hour;
     }
 
-    public int getMinute() {
+    public String getMinute() {
         return minute;
     }
 
-    public void setMinute(int minute) {
+    public void setMinute(String minute) {
         this.minute = minute;
     }
 
-    public boolean[] getRepeatdays() {
+    public String getRepeatdays() {
         return repeatdays;
     }
 
-    public void setRepeatdays(boolean[] repeatdays) {
+    public void setRepeatdays(String repeatdays) {
         this.repeatdays = repeatdays;
     }
 

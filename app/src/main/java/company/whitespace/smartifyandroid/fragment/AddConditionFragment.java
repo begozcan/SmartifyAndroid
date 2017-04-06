@@ -15,7 +15,9 @@ import android.widget.*;
 import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.activity.MainActivity;
 import company.whitespace.smartifyandroid.model.Device;
+import company.whitespace.smartifyandroid.networking.DeviceAsyncTask;
 import company.whitespace.smartifyandroid.networking.GetUpdatesAsyncTask;
+import company.whitespace.smartifyandroid.networking.TaskAsyncTask;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -264,6 +266,14 @@ public class AddConditionFragment extends Fragment {
         pairs[0] = new Pair<>("message", message.toString());
         Log.i("Message", message.toString());
         new GetUpdatesAsyncTask(AddConditionFragment.this).execute(pairs);
+
+        pairs = new Pair[5];
+        pairs[0] = new Pair<>("type", "Conditional Task");
+        pairs[1] = new Pair<>("device_name", deviceId);
+        pairs[2] = new Pair<>("action_name", actionName);
+        pairs[3] = new Pair<>("sensor_type", conditionType);
+        pairs[4] = new Pair<>("threshold", value);
+        new TaskAsyncTask(getContext(), "tasks_add").execute(pairs);
     }
 
     public void onSuccess() {
