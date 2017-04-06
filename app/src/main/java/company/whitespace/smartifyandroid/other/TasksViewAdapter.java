@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +17,17 @@ import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.activity.MainActivity;
 import company.whitespace.smartifyandroid.fragment.AddConditionFragment;
 import company.whitespace.smartifyandroid.fragment.AddScheduleFragment;
+import company.whitespace.smartifyandroid.fragment.DevicesFragment;
+import company.whitespace.smartifyandroid.fragment.TasksFragment;
+import company.whitespace.smartifyandroid.model.ConditionalTask;
 import company.whitespace.smartifyandroid.model.Task;
 
 import java.util.List;
+
 import company.whitespace.smartifyandroid.fragment.TasksFragment.OnListFragmentInteractionListener;
+import company.whitespace.smartifyandroid.networking.DeviceAsyncTask;
+import company.whitespace.smartifyandroid.networking.TaskAsyncTask;
+
 /**
  * {@link RecyclerView.Adapter} makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
@@ -36,6 +45,16 @@ public class TasksViewAdapter extends RecyclerView.Adapter<TasksViewAdapter.View
         mListener = listener;
         this.fragmentManager = fragmentManager;
     }
+    public void onSuccess(){
+        MainActivity.CURRENT_TAG = MainActivity.TAG_TASKS;
+        // update the main content by replacing fragments
+        Fragment fragment = new TasksFragment();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                android.R.anim.fade_out);
+        fragmentTransaction.replace(R.id.frame, fragment, "tasks");
+        fragmentTransaction.commit();
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -49,7 +68,7 @@ public class TasksViewAdapter extends RecyclerView.Adapter<TasksViewAdapter.View
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mItem = mTasks.get(position);
         holder.type.setText(mTasks.get(position).getType());
-        holder.explanation.setText(mTasks.get(position).getExplanation());
+        holder.explanation.setText(mTasks.get(position).toString());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,23 +81,59 @@ public class TasksViewAdapter extends RecyclerView.Adapter<TasksViewAdapter.View
             }
         });
 
-//        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                // must close normal
-////                myViewHolder.sml.smoothCloseMenu();
-////                users.remove(vh.getAdapterPosition());
-////                mAdapter.notifyItemRemoved(vh.getAdapterPosition());
-////                Log.d("SWIPE MENU", "Delete: " + holder.mItem.toString());
-////                Pair<String, String>[] pairs = new Pair[3];
-////                pairs[0] = new Pair<>("name", holder.mItem.getName());
-////                pairs[1] = new Pair<>("room", holder.mItem.getRoom());
-////                pairs[2] = new Pair<>("type", holder.mItem.getType());
-////                DeviceAsyncTask deviceAsyncTask = new DeviceAsyncTask(context, "devices_remove");
-////                deviceAsyncTask.setDevicesViewAdapter((ü) TasksViewAdapter.this);
-////                deviceAsyncTask.execute(pairs);
-//            }
-//        });
+        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                // must close normal
+//                myViewHolder.sml.smoothCloseMenu();
+//                users.remove(vh.getAdapterPosition());
+//                mAdapter.notifyItemRemoved(vh.getAdapterPosition());
+                if (holder.mItem.getType().equals("Conditional Task")) {
+                    Pair<String, String>[] pairs = new Pair[5];
+                    ConditionalTask task = (ConditionalTask) holder.mItem;
+                    pairs[0] = new Pair<>("type", task.getType());
+                    pairs[1] = new Pair<>("device_name", task.getDeviceName());
+                    pairs[2] = new Pair<>("action_name", task.getActionName());
+                    pairs[3] = new Pair<>("sensor_type", task.getSensorType());
+                    pairs[4] = new Pair<>("threshold", task.getThreshold());
+
+                    TaskAsyncTask taskAsyncTask = new TaskAsyncTask(context, "tasks_remove");
+                    taskAsyncTask.setTasksViewAdapter(TasksViewAdapter.this);
+                    taskAsyncTask.execute(pairs);
+                }
+            }
+        });
+
+        holder.btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("task_id", String.valueOf(position));
+
+                if (holder.mItem.getType().equals("Scheduled Task")) {
+                    MainActivity.CURRENT_TAG = MainActivity.TAG_ADD_SCHEDULE;
+                    Fragment fragment = new AddScheduleFragment();
+                    fragment.setArguments(bundle);
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                            android.R.anim.fade_out);
+                    fragmentTransaction.replace(R.id.frame, fragment, "add schedule");
+                    fragmentTransaction.commit();
+                }
+
+                else {
+                    MainActivity.CURRENT_TAG = MainActivity.TAG_ADD_CONDITION;
+                    Fragment fragment = new AddConditionFragment();
+                    fragment.setArguments(bundle);
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                            android.R.anim.fade_out);
+                    fragmentTransaction.replace(R.id.frame, fragment, "add condition");
+                    fragmentTransaction.commit();
+                }
+
+            }
+        });
 
         holder.sml.setSwipeEnable(true);
     }
