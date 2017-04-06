@@ -7,18 +7,19 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import company.whitespace.smartifyandroid.R;
-import company.whitespace.smartifyandroid.model.Device;
+import company.whitespace.smartifyandroid.model.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static company.whitespace.smartifyandroid.model.Devices.getDevices;
 
-import company.whitespace.smartifyandroid.model.Task;
 import company.whitespace.smartifyandroid.other.TasksViewAdapter;
 
 /**
@@ -33,7 +34,7 @@ public class TasksFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private List<Task> tasks = new ArrayList<Task>();
+    private List<Task> tasks;
     private OnListFragmentInteractionListener mListener;
     private String resp;
 
@@ -42,6 +43,7 @@ public class TasksFragment extends Fragment {
      * fragment (e.g. upon screen orientation changes).
      */
     public TasksFragment() {
+        tasks = Tasks.getTasks(getContext());
     }
 
     // TODO: Customize parameter initialization
@@ -62,10 +64,7 @@ public class TasksFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
 
-        tasks.add(new Task("Conditonal", "If Light is 5"));
-        tasks.add(new Task("Conditonal", "If Humidity is 20"));
-        tasks.add(new Task("Scheduled", "All week days at 20:30"));
-        tasks.add(new Task("Scheduled", "MON,TUE,WED at 07:30"));
+        Log.i("TASKS,string", tasks.toString());
     }
 
     @Override

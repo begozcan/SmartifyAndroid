@@ -18,12 +18,15 @@ import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.activity.IRSetupActivity;
 import company.whitespace.smartifyandroid.activity.MainActivity;
 import company.whitespace.smartifyandroid.model.Device;
+import company.whitespace.smartifyandroid.networking.DeviceAsyncTask;
 import company.whitespace.smartifyandroid.networking.GetUpdatesAsyncTask;
+import company.whitespace.smartifyandroid.networking.TaskAsyncTask;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static company.whitespace.smartifyandroid.model.Devices.getDevices;
@@ -156,8 +159,7 @@ public class AddScheduleFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {
                     deviceId = position - 1;
-                }
-                else if (position == 0) {
+                } else if (position == 0) {
                     deviceId = -1;
                 }
             }
@@ -181,8 +183,7 @@ public class AddScheduleFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {
                     action = parent.getItemAtPosition(position).toString();
-                }
-                else if (position == 0) {
+                } else if (position == 0) {
                     action = null;
                 }
             }
@@ -295,7 +296,7 @@ public class AddScheduleFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        
+
         JSONObject data = new JSONObject();
 
         try {
@@ -320,6 +321,16 @@ public class AddScheduleFragment extends Fragment {
         pairs[0] = new Pair<>("message", message.toString());
         Log.i("Message", message.toString());
         new GetUpdatesAsyncTask(AddScheduleFragment.this).execute(pairs);
+
+        String[] times = time.split(":");
+        pairs = new Pair[5];
+        pairs[0] = new Pair<>("type", "Conditional Task");
+        pairs[1] = new Pair<>("device_name", deviceId);
+        pairs[2] = new Pair<>("action_name", actionName);
+        pairs[3] = new Pair<>("hour", times[0]);
+        pairs[4] = new Pair<>("minute", times[1]);
+        pairs[5] = new Pair<>("repeatdays", Arrays.toString(week));
+        new TaskAsyncTask(getContext(), "tasks_add").execute(pairs);
     }
 
     public void onSuccess() {
