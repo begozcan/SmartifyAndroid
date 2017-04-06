@@ -43,7 +43,6 @@ public class TasksFragment extends Fragment {
      * fragment (e.g. upon screen orientation changes).
      */
     public TasksFragment() {
-        tasks = Tasks.getTasks(getContext());
     }
 
     // TODO: Customize parameter initialization
@@ -63,6 +62,8 @@ public class TasksFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+
+        tasks = Tasks.getTasks(getContext());
 
         Log.i("TASKS,string", tasks.toString());
     }
