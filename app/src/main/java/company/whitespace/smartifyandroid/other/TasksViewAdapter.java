@@ -22,9 +22,7 @@ import company.whitespace.smartifyandroid.fragment.TasksFragment;
 import company.whitespace.smartifyandroid.model.ConditionalTask;
 import company.whitespace.smartifyandroid.model.ScheduledTask;
 import company.whitespace.smartifyandroid.model.Task;
-
 import java.util.List;
-
 import company.whitespace.smartifyandroid.fragment.TasksFragment.OnListFragmentInteractionListener;
 import company.whitespace.smartifyandroid.networking.DeviceAsyncTask;
 import company.whitespace.smartifyandroid.networking.TaskAsyncTask;
@@ -121,7 +119,7 @@ public class TasksViewAdapter extends RecyclerView.Adapter<TasksViewAdapter.View
                     MainActivity.CURRENT_TAG = MainActivity.TAG_ADD_SCHEDULE;
                     Fragment fragment = new AddScheduleFragment();
                     fragment.setArguments(bundle);
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    FragmentTransaction fragmentTransaction = tasksFragment.getFragmentManager().beginTransaction();
                     fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
                             android.R.anim.fade_out);
                     fragmentTransaction.replace(R.id.frame, fragment, "add schedule");
@@ -132,7 +130,7 @@ public class TasksViewAdapter extends RecyclerView.Adapter<TasksViewAdapter.View
                     MainActivity.CURRENT_TAG = MainActivity.TAG_ADD_CONDITION;
                     Fragment fragment = new AddConditionFragment();
                     fragment.setArguments(bundle);
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    FragmentTransaction fragmentTransaction = tasksFragment.getFragmentManager().beginTransaction();
                     fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
                             android.R.anim.fade_out);
                     fragmentTransaction.replace(R.id.frame, fragment, "add condition");

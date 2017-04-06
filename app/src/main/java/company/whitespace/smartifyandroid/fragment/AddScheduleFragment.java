@@ -98,6 +98,7 @@ public class AddScheduleFragment extends Fragment {
         devices = getDevices(getContext());
         tasks = getTasks(getContext());
         deviceId = -1;
+        taskId = -1;
         action = null;
         // TODO: Add other actions
         actions.add("Select one...");
@@ -243,14 +244,11 @@ public class AddScheduleFragment extends Fragment {
             String weekStr = task.getRepeatdays();
             weekStr = weekStr.replace("[", "");
             String[] weekArr = weekStr.split(", ");
+
             for (int i = 0; i < weekArr.length; i++) {
                 week[i] = Boolean.parseBoolean(weekArr[i]);
                 w[i].setChecked(week[i]);
             }
-
-
-
-
         }
 
         return view;
