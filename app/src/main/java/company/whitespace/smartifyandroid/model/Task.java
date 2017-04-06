@@ -3,13 +3,31 @@ package company.whitespace.smartifyandroid.model;
 /**
  * Created by Alchemistake on 31/03/2017.
  */
-public class Task {
+public abstract class Task {
+    private String deviceName;
+    private String actionName;
     private String type;
-    private String explanation;
 
-    public Task(String type, String explanation) {
+    public Task(String deviceName, String actionName, String type) {
+        this.deviceName = deviceName;
+        this.actionName = actionName;
         this.type = type;
-        this.explanation = explanation;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
+    }
+
+    public String getActionName() {
+        return actionName;
+    }
+
+    public void setActionName(String actionName) {
+        this.actionName = actionName;
     }
 
     public String getType() {
@@ -18,13 +36,5 @@ public class Task {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getExplanation() {
-        return explanation;
-    }
-
-    public void setExplanation(String explanation) {
-        this.explanation = explanation;
     }
 }
