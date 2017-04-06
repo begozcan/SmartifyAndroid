@@ -28,7 +28,8 @@ public class Tasks {
         pairs[4] = new Pair<>("threshold", "----------");
         new TaskAsyncTask(context, "tasks_remove").execute(pairs);
 
-        SharedPreferences deviceSharedPref = context.getSharedPreferences(context.getString(R.string.tasks_shared_preferences), Context.MODE_PRIVATE);
+        String name = context.getString(R.string.tasks_shared_preferences);
+        SharedPreferences deviceSharedPref = context.getSharedPreferences(name, Context.MODE_PRIVATE);
 
         for (String key : deviceSharedPref.getAll().keySet()) {
             try {
@@ -36,7 +37,7 @@ public class Tasks {
                 if (arr.getString(1).equals("Conditional Task"))
                     tasks.add(new ConditionalTask(arr.getString(2), arr.getString(3), arr.getString(4), arr.getString(5)));
                 else
-                    tasks.add(new ScheduledTask(arr.getString(2), arr.getString(3), arr.getString(4), arr.getString(5), arr.getString(0)));
+                    tasks.add(new ScheduledTask(arr.getString(2), arr.getString(3), arr.getString(4), arr.getString(5), arr.getString(6)));
 
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -17,6 +17,7 @@ import company.whitespace.smartifyandroid.activity.MainActivity;
 import company.whitespace.smartifyandroid.fragment.DevicesFragment;
 import company.whitespace.smartifyandroid.fragment.TasksFragment;
 import company.whitespace.smartifyandroid.model.ConditionalTask;
+import company.whitespace.smartifyandroid.model.ScheduledTask;
 import company.whitespace.smartifyandroid.model.Task;
 
 import java.util.List;
@@ -34,23 +35,16 @@ public class TasksViewAdapter extends RecyclerView.Adapter<TasksViewAdapter.View
 
     private final List<Task> mTasks;
     private final OnListFragmentInteractionListener mListener;
-    private final FragmentManager fragmentManager;
+    private TasksFragment tasksFragment;
     private Context context;
 
-    public TasksViewAdapter(List<Task> tasks, OnListFragmentInteractionListener listener, FragmentManager fragmentManager) {
+    public TasksViewAdapter(List<Task> tasks, OnListFragmentInteractionListener listener, TasksFragment tasksFragment) {
         mTasks = tasks;
         mListener = listener;
-        this.fragmentManager = fragmentManager;
+        this.tasksFragment = tasksFragment;
     }
     public void onSuccess(){
-        MainActivity.CURRENT_TAG = MainActivity.TAG_TASKS;
-        // update the main content by replacing fragments
-        Fragment fragment = new TasksFragment();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
-                android.R.anim.fade_out);
-        fragmentTransaction.replace(R.id.frame, fragment, "tasks");
-        fragmentTransaction.commit();
+        tasksFragment.onSuccess();
     }
 
     @Override
@@ -93,6 +87,19 @@ public class TasksViewAdapter extends RecyclerView.Adapter<TasksViewAdapter.View
                     pairs[2] = new Pair<>("action_name", task.getActionName());
                     pairs[3] = new Pair<>("sensor_type", task.getSensorType());
                     pairs[4] = new Pair<>("threshold", task.getThreshold());
+
+                    TaskAsyncTask taskAsyncTask = new TaskAsyncTask(context, "tasks_remove");
+                    taskAsyncTask.setTasksViewAdapter(TasksViewAdapter.this);
+                    taskAsyncTask.execute(pairs);
+                }else{
+                    Pair<String, String>[] pairs = new Pair[6];
+                    ScheduledTask task = (ScheduledTask) holder.mItem;
+                    pairs[0] = new Pair<>("type", task.getType());
+                    pairs[1] = new Pair<>("device_name", task.getDeviceName());
+                    pairs[2] = new Pair<>("action_name", task.getActionName());
+                    pairs[3] = new Pair<>("hour", task.getHour());
+                    pairs[4] = new Pair<>("minute", task.getMinute());
+                    pairs[5] = new Pair<>("repeatdays", task.getRepeatdays());
 
                     TaskAsyncTask taskAsyncTask = new TaskAsyncTask(context, "tasks_remove");
                     taskAsyncTask.setTasksViewAdapter(TasksViewAdapter.this);

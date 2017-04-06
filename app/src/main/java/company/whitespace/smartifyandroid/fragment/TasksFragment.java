@@ -3,6 +3,7 @@ package company.whitespace.smartifyandroid.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import company.whitespace.smartifyandroid.R;
+import company.whitespace.smartifyandroid.activity.MainActivity;
 import company.whitespace.smartifyandroid.model.*;
 
 import java.util.ArrayList;
@@ -43,7 +45,6 @@ public class TasksFragment extends Fragment {
      * fragment (e.g. upon screen orientation changes).
      */
     public TasksFragment() {
-        tasks = Tasks.getTasks(getContext());
     }
 
     // TODO: Customize parameter initialization
@@ -56,9 +57,22 @@ public class TasksFragment extends Fragment {
         return fragment;
     }
 
+    public void onSuccess(){
+        MainActivity.CURRENT_TAG = MainActivity.TAG_TASKS;
+        // update the main content by replacing fragments
+        Fragment fragment = new TasksFragment();
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                android.R.anim.fade_out);
+        fragmentTransaction.replace(R.id.frame, fragment, "tasks");
+        fragmentTransaction.commit();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        tasks = Tasks.getTasks(TasksFragment.this.getContext());
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
@@ -84,7 +98,7 @@ public class TasksFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            recyclerView.setAdapter(new TasksViewAdapter(tasks, mListener, getActivity().getSupportFragmentManager()));
+            recyclerView.setAdapter(new TasksViewAdapter(tasks, mListener, TasksFragment.this));
 
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                     DividerItemDecoration.VERTICAL);
