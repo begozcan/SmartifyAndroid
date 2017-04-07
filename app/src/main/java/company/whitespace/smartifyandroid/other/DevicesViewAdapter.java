@@ -77,7 +77,6 @@ public class DevicesViewAdapter extends RecyclerView.Adapter<DevicesViewAdapter.
                 Bundle bundle = new Bundle();
                 bundle.putString("device_id", String.valueOf(position));
 
-
                 MainActivity.CURRENT_TAG = MainActivity.TAG_CONTROL_DEVICE;
 
                 // update the main content by replacing fragments

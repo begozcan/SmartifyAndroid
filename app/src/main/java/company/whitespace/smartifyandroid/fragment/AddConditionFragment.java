@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import android.widget.*;
 import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.activity.MainActivity;
+import company.whitespace.smartifyandroid.model.ConditionalTask;
 import company.whitespace.smartifyandroid.model.Device;
+import company.whitespace.smartifyandroid.model.Task;
 import company.whitespace.smartifyandroid.networking.DeviceAsyncTask;
 import company.whitespace.smartifyandroid.networking.GetUpdatesAsyncTask;
 import company.whitespace.smartifyandroid.networking.TaskAsyncTask;
@@ -23,9 +25,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static company.whitespace.smartifyandroid.model.Devices.getDevices;
+import static company.whitespace.smartifyandroid.model.Tasks.getTasks;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,10 +41,12 @@ import static company.whitespace.smartifyandroid.model.Devices.getDevices;
  */
 public class AddConditionFragment extends Fragment {
     private int deviceId;
+    private int taskId;
     private String action;
     private String condition;
 
     private List<Device> devices = new ArrayList<Device>();
+    private List<Task> tasks = new ArrayList<Task>();
     private List<String> actions = new ArrayList<String>();
     private List<String> conditions = new ArrayList<String>();
 
@@ -74,8 +80,10 @@ public class AddConditionFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         devices  = getDevices(getContext());
+        tasks = getTasks(getContext());
 
         deviceId = -1;
+        taskId = -1;
         action = null;
         condition = null;
 
@@ -102,8 +110,11 @@ public class AddConditionFragment extends Fragment {
         submit = (Button) view.findViewById(R.id.button_submit);
 
         Bundle bundle = this.getArguments();
-        if(bundle != null){
-            deviceId = Integer.parseInt(bundle.getString("device_id"));
+        if (bundle != null){
+            if (bundle.getString("device_id") != null)
+                deviceId = Integer.parseInt(bundle.getString("device_id"));
+            else if (bundle.getString("task_id") != null)
+                taskId = Integer.parseInt(bundle.getString("task_id"));
         }
 
         List<String> devices_str = toStringList(devices);
@@ -126,10 +137,6 @@ public class AddConditionFragment extends Fragment {
         ArrayAdapter<String> deviceAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, devices_str);
         deviceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         devicesSpinner.setAdapter(deviceAdapter);
-
-        if (deviceId != -1) {
-            devicesSpinner.setSelection(deviceId + 1);
-        }
 
         actionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -180,6 +187,23 @@ public class AddConditionFragment extends Fragment {
                 sendToServer(condition, value.getText().toString(), devices.get(deviceId).getName(), action);
             }
         });
+
+        if (deviceId != -1) {
+            devicesSpinner.setSelection(deviceId + 1);
+        }
+        else if (taskId != -1) {
+            deviceId = devices_str.indexOf(tasks.get(taskId).getDeviceName());
+            Log.d("ADD CONDITION", String.valueOf(deviceId));
+            devicesSpinner.setSelection(deviceId);
+
+            action = tasks.get(taskId).getActionName();
+            actionSpinner.setSelection(actions.indexOf(tasks.get(taskId).getActionName()));
+
+            condition = ((ConditionalTask) tasks.get(taskId)).getSensorType();
+            conditionSpinner.setSelection(conditions.indexOf(((ConditionalTask) tasks.get(taskId)).getSensorType()));
+
+            value.setText(((ConditionalTask) tasks.get(taskId)).getThreshold());
+        }
 
         return view;
     }

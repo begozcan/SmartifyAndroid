@@ -78,6 +78,8 @@ public class TasksFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
 
+        tasks = Tasks.getTasks(getContext());
+
         Log.i("TASKS,string", tasks.toString());
     }
 

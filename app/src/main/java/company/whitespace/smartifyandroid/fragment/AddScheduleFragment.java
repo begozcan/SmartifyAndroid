@@ -17,7 +17,10 @@ import android.widget.*;
 import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.activity.IRSetupActivity;
 import company.whitespace.smartifyandroid.activity.MainActivity;
+import company.whitespace.smartifyandroid.model.ConditionalTask;
 import company.whitespace.smartifyandroid.model.Device;
+import company.whitespace.smartifyandroid.model.ScheduledTask;
+import company.whitespace.smartifyandroid.model.Task;
 import company.whitespace.smartifyandroid.networking.DeviceAsyncTask;
 import company.whitespace.smartifyandroid.networking.GetUpdatesAsyncTask;
 import company.whitespace.smartifyandroid.networking.TaskAsyncTask;
@@ -30,6 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static company.whitespace.smartifyandroid.model.Devices.getDevices;
+import static company.whitespace.smartifyandroid.model.Tasks.getTasks;
 
 
 /**
@@ -45,8 +49,10 @@ public class AddScheduleFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
     private int deviceId;
+    private int taskId;
     private String action;
     private List<Device> devices = new ArrayList<Device>();
+    private List<Task> tasks = new ArrayList<Task>();
     private List<String> actions = new ArrayList<String>();
 
     private Spinner devicesSpinner;
@@ -90,7 +96,9 @@ public class AddScheduleFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         devices = getDevices(getContext());
+        tasks = getTasks(getContext());
         deviceId = -1;
+        taskId = -1;
         action = null;
         // TODO: Add other actions
         actions.add("Select one...");
@@ -145,10 +153,13 @@ public class AddScheduleFragment extends Fragment {
         sat.setOnCheckedChangeListener(onCheckedChangeListener);
         sun.setOnCheckedChangeListener(onCheckedChangeListener);
 
-        Bundle bundle = this.getArguments();
 
+        Bundle bundle = this.getArguments();
         if (bundle != null) {
-            deviceId = Integer.parseInt(bundle.getString("device_id"));
+            if (bundle.getString("device_id") != null)
+                deviceId = Integer.parseInt(bundle.getString("device_id"));
+            else if (bundle.getString("task_id") != null)
+                taskId = Integer.parseInt(bundle.getString("task_id"));
         }
 
         Log.d("DEVICE_ID", String.valueOf(deviceId));
@@ -173,10 +184,6 @@ public class AddScheduleFragment extends Fragment {
         ArrayAdapter<String> deviceAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, devices_str);
         deviceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         devicesSpinner.setAdapter(deviceAdapter);
-
-        if (deviceId != -1) {
-            devicesSpinner.setSelection(deviceId + 1);
-        }
 
         actionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -218,6 +225,31 @@ public class AddScheduleFragment extends Fragment {
                 timePicker.show();
             }
         });
+
+        if (deviceId != -1) {
+            devicesSpinner.setSelection(deviceId + 1);
+        }
+        else if (taskId != -1) {
+            ScheduledTask task = (ScheduledTask) tasks.get(taskId);
+            deviceId = devices_str.indexOf(task.getDeviceName());
+            Log.d("ADD CONDITION", String.valueOf(deviceId));
+            devicesSpinner.setSelection(deviceId);
+
+            action = task.getActionName();
+            actionSpinner.setSelection(actions.indexOf(task.getActionName()));
+
+            time.setText(task.getHour() + ":" + task.getMinute());
+
+            ToggleButton[] w = {mon,tue,wed,thu,fri,sat,sun};
+            String weekStr = task.getRepeatdays();
+            weekStr = weekStr.replace("[", "");
+            String[] weekArr = weekStr.split(", ");
+
+            for (int i = 0; i < weekArr.length; i++) {
+                week[i] = Boolean.parseBoolean(weekArr[i]);
+                w[i].setChecked(week[i]);
+            }
+        }
 
         return view;
     }
