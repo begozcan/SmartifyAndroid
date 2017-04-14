@@ -57,7 +57,6 @@ public class AddDeviceFragment extends Fragment implements AdapterView.OnItemSel
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         type = -1;
 
     }
@@ -84,7 +83,7 @@ public class AddDeviceFragment extends Fragment implements AdapterView.OnItemSel
             public void onClick(View view) {
                 String name = deviceName.getText().toString();
                 String room = deviceRoom.getText().toString();
-                if (name != null && room != null && type > -1)
+                if (!name.isEmpty() && !room.isEmpty() && type > -1)
                     sendToServer(name, room);
             }
         });
@@ -140,7 +139,8 @@ public class AddDeviceFragment extends Fragment implements AdapterView.OnItemSel
         type = position;
         if (type == 3){
             configButton.setVisibility(View.VISIBLE);
-        }else{
+        }
+        else{
             configButton.setVisibility(View.GONE);
         }
     }
@@ -152,13 +152,15 @@ public class AddDeviceFragment extends Fragment implements AdapterView.OnItemSel
     }
 
     public void sendToServer(String name, String room) {
-        Pair<String, String>[] pairs = new Pair[3];
-        pairs[0] = new Pair<>("name", name);
-        pairs[1] = new Pair<>("room", room);
-        pairs[2] = new Pair<>("type", types[type]);
-        DeviceAsyncTask deviceAsyncTask = new DeviceAsyncTask(getContext(), "devices_add");
-        deviceAsyncTask.setAddDeviceFragment(AddDeviceFragment.this);
-        deviceAsyncTask.execute(pairs);
+        if (type != -1 && !name.isEmpty() && !room.isEmpty()) {
+            Pair<String, String>[] pairs = new Pair[3];
+            pairs[0] = new Pair<>("name", name);
+            pairs[1] = new Pair<>("room", room);
+            pairs[2] = new Pair<>("type", types[type]);
+            DeviceAsyncTask deviceAsyncTask = new DeviceAsyncTask(getContext(), "devices_add");
+            deviceAsyncTask.setAddDeviceFragment(AddDeviceFragment.this);
+            deviceAsyncTask.execute(pairs);
+        }
     }
 
     /**
