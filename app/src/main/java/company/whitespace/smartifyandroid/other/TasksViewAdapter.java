@@ -1,6 +1,7 @@
 package company.whitespace.smartifyandroid.other;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,14 +15,14 @@ import android.widget.TextView;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 import company.whitespace.smartifyandroid.R;
 import company.whitespace.smartifyandroid.activity.MainActivity;
+import company.whitespace.smartifyandroid.fragment.AddConditionFragment;
+import company.whitespace.smartifyandroid.fragment.AddScheduleFragment;
 import company.whitespace.smartifyandroid.fragment.DevicesFragment;
 import company.whitespace.smartifyandroid.fragment.TasksFragment;
 import company.whitespace.smartifyandroid.model.ConditionalTask;
 import company.whitespace.smartifyandroid.model.ScheduledTask;
 import company.whitespace.smartifyandroid.model.Task;
-
 import java.util.List;
-
 import company.whitespace.smartifyandroid.fragment.TasksFragment.OnListFragmentInteractionListener;
 import company.whitespace.smartifyandroid.networking.DeviceAsyncTask;
 import company.whitespace.smartifyandroid.networking.TaskAsyncTask;
@@ -108,6 +109,36 @@ public class TasksViewAdapter extends RecyclerView.Adapter<TasksViewAdapter.View
             }
         });
 
+        holder.btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("task_id", String.valueOf(position));
+
+                if (holder.mItem.getType().equals("Scheduled Task")) {
+                    MainActivity.CURRENT_TAG = MainActivity.TAG_ADD_SCHEDULE;
+                    Fragment fragment = new AddScheduleFragment();
+                    fragment.setArguments(bundle);
+                    FragmentTransaction fragmentTransaction = tasksFragment.getFragmentManager().beginTransaction();
+                    fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                            android.R.anim.fade_out);
+                    fragmentTransaction.replace(R.id.frame, fragment, "add schedule");
+                    fragmentTransaction.commit();
+                }
+
+                else {
+                    MainActivity.CURRENT_TAG = MainActivity.TAG_ADD_CONDITION;
+                    Fragment fragment = new AddConditionFragment();
+                    fragment.setArguments(bundle);
+                    FragmentTransaction fragmentTransaction = tasksFragment.getFragmentManager().beginTransaction();
+                    fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                            android.R.anim.fade_out);
+                    fragmentTransaction.replace(R.id.frame, fragment, "add condition");
+                    fragmentTransaction.commit();
+                }
+
+            }
+        });
 
         holder.sml.setSwipeEnable(true);
     }

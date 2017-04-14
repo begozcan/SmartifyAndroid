@@ -25,8 +25,11 @@ import static company.whitespace.smartifyandroid.model.Devices.getDevices;
 public class ControlDeviceFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private Spinner devicesSpinner;
     private LinearLayout remoteButtons;
+    private LinearLayout angleButtons;
     private TextView screen;
     private Button powerButton;
+    private SeekBar angle;
+    private Button angleSubmit;
     private ImageButton deleteButton;
     private ImageButton okButton;
 
@@ -44,6 +47,7 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
     private List<Device> devices = new ArrayList<Device>();
     private OnFragmentInteractionListener mListener;
     private int deviceId;
+    private int angleValue;
     private StringBuilder channelNo = new StringBuilder("");
 
     public ControlDeviceFragment() {
@@ -78,8 +82,11 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
 
         devicesSpinner = (Spinner) view.findViewById(R.id.device_spinner);
         remoteButtons = (LinearLayout) view.findViewById(R.id.remote_buttons);
+        angleButtons = (LinearLayout) view.findViewById(R.id.angle_buttons);
         screen = (TextView) view.findViewById(R.id.screen);
         powerButton = (Button) view.findViewById(R.id.power_button);
+        angle = (SeekBar) view.findViewById(R.id.angle);
+        angleSubmit = (Button) view.findViewById(R.id.angle_submit);
         deleteButton = (ImageButton) view.findViewById(R.id.button_delete);
         okButton = (ImageButton) view.findViewById(R.id.button_ok);
         // Numpad
@@ -113,6 +120,26 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
             devicesSpinner.setSelection(deviceId + 1);
         }
 
+        angle.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                angleValue = i;
+                // Showing selected angle value
+                Toast.makeText(getContext(), "Selected: " + i, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        angleSubmit.setOnClickListener(new buttonOnClickListener());
         powerButton.setOnClickListener(new buttonOnClickListener());
         deleteButton.setOnClickListener(new buttonOnClickListener());
         okButton.setOnClickListener(new buttonOnClickListener());
@@ -170,8 +197,19 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
         if (position > 0) {
             // Showing selected spinner item
             //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-            //TODO: Check type of device, show accordingly
-            powerButton.setVisibility(View.VISIBLE);
+
+            if (devices.get(deviceId).getType().equals("Radiator Control Unit")) {
+//                angle.setVisibility(View.VISIBLE);
+//                angleSubmit.setVisibility(View.VISIBLE);
+                angleButtons.setVisibility(View.VISIBLE);
+                powerButton.setVisibility(View.INVISIBLE);
+            }
+            else {
+//                angle.setVisibility(View.GONE);
+//                angleSubmit.setVisibility(View.GONE);
+                angleButtons.setVisibility(View.GONE);
+                powerButton.setVisibility(View.VISIBLE);
+            }
 
             if (devices.get(deviceId).getType().equals("Universal Remote Unit"))
                 remoteButtons.setVisibility(View.VISIBLE);
@@ -179,6 +217,9 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
                 remoteButtons.setVisibility(View.INVISIBLE);
         }
         else {
+//            angle.setVisibility(View.GONE);
+//            angleSubmit.setVisibility(View.GONE);
+            angleButtons.setVisibility(View.GONE);
             powerButton.setVisibility(View.INVISIBLE);
             remoteButtons.setVisibility(View.INVISIBLE);
         }
@@ -186,6 +227,9 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
 
     public void onNothingSelected(AdapterView<?> arg0) {
         devicesSpinner.setSelection(0);
+//        angle.setVisibility(View.GONE);
+//        angleSubmit.setVisibility(View.GONE);
+        angleButtons.setVisibility(View.GONE);
         powerButton.setVisibility(View.INVISIBLE);
         remoteButtons.setVisibility(View.INVISIBLE);
     }
@@ -236,9 +280,12 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
             //TODO: Send command to server
             if (deviceId > -1)
                 switch (view.getId()) {
+                    case R.id.angle_submit:
+                        //TODO: Send to server
+
+                        break;
                     case R.id.power_button:
-                        // TODO: Check type instead of name
-                        if (devices.get(deviceId).getName() == "TV") {
+                        if (devices.get(deviceId).getType().equals("Universal Remote Unit")) {
                             sendToServer("infra", "p");
                         }
                         else {
