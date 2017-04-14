@@ -133,6 +133,7 @@ public class AddConditionFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 devicesSpinner.setSelection(0);
+                deviceId = -1;
             }
         });
 
@@ -154,6 +155,7 @@ public class AddConditionFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 actionSpinner.setSelection(0);
+                action = null;
             }
         });
 
@@ -175,6 +177,7 @@ public class AddConditionFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 conditionSpinner.setSelection(0);
+                condition = null;
             }
         });
 
@@ -185,8 +188,10 @@ public class AddConditionFragment extends Fragment {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Null check
-                sendToServer(condition, value.getText().toString(), devices.get(deviceId).getName(), action);
+                String conditionValue = value.getText().toString();
+                if (deviceId != -1 && conditionValue.isEmpty() && condition != null && !condition.isEmpty() &&
+                        action != null && !action.isEmpty())
+                    sendToServer(condition, conditionValue, devices.get(deviceId).getName(), action);
             }
         });
 

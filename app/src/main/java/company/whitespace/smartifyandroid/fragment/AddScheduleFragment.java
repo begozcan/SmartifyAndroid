@@ -209,8 +209,10 @@ public class AddScheduleFragment extends Fragment {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Null check
-                sendToServer(time.getText().toString(), week, devices.get(deviceId).getName(), action);
+                String timeValue = time.getText().toString();
+                if (deviceId != -1 && timeValue.isEmpty() && week != null && 
+                        action != null && !action.isEmpty())
+                sendToServer(timeValue, week, devices.get(deviceId).getName(), action);
             }
         });
 
