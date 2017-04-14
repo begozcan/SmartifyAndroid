@@ -81,26 +81,28 @@ public class TasksViewAdapter extends RecyclerView.Adapter<TasksViewAdapter.View
 //                users.remove(vh.getAdapterPosition());
 //                mAdapter.notifyItemRemoved(vh.getAdapterPosition());
                 if (holder.mItem.getType().equals("Conditional Task")) {
-                    Pair<String, String>[] pairs = new Pair[5];
+                    Pair<String, String>[] pairs = new Pair[6];
                     ConditionalTask task = (ConditionalTask) holder.mItem;
                     pairs[0] = new Pair<>("type", task.getType());
                     pairs[1] = new Pair<>("device_name", task.getDeviceName());
-                    pairs[2] = new Pair<>("action_name", task.getActionName());
-                    pairs[3] = new Pair<>("sensor_type", task.getSensorType());
-                    pairs[4] = new Pair<>("threshold", task.getThreshold());
+                    pairs[2] = new Pair<>("room_name", task.getRoomName());
+                    pairs[3] = new Pair<>("action_name", task.getActionName());
+                    pairs[4] = new Pair<>("sensor_type", task.getSensorType());
+                    pairs[5] = new Pair<>("threshold", task.getThreshold());
 
                     TaskAsyncTask taskAsyncTask = new TaskAsyncTask(context, "tasks_remove");
                     taskAsyncTask.setTasksViewAdapter(TasksViewAdapter.this);
                     taskAsyncTask.execute(pairs);
                 }else{
-                    Pair<String, String>[] pairs = new Pair[6];
+                    Pair<String, String>[] pairs = new Pair[7];
                     ScheduledTask task = (ScheduledTask) holder.mItem;
                     pairs[0] = new Pair<>("type", task.getType());
                     pairs[1] = new Pair<>("device_name", task.getDeviceName());
-                    pairs[2] = new Pair<>("action_name", task.getActionName());
-                    pairs[3] = new Pair<>("hour", task.getHour());
-                    pairs[4] = new Pair<>("minute", task.getMinute());
-                    pairs[5] = new Pair<>("repeatdays", task.getRepeatdays());
+                    pairs[2] = new Pair<>("room_name", task.getRoomName());
+                    pairs[3] = new Pair<>("action_name", task.getActionName());
+                    pairs[4] = new Pair<>("hour", task.getHour());
+                    pairs[5] = new Pair<>("minute", task.getMinute());
+                    pairs[6] = new Pair<>("repeatdays", task.getRepeatdays());
 
                     TaskAsyncTask taskAsyncTask = new TaskAsyncTask(context, "tasks_remove");
                     taskAsyncTask.setTasksViewAdapter(TasksViewAdapter.this);

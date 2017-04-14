@@ -8,8 +8,8 @@ public class ScheduledTask extends Task{
     private String minute;
     private String repeatdays;
 
-    public ScheduledTask(String deviceName, String actionName, String hour, String minute, String repeatdays) {
-        super(deviceName, actionName, "Scheduled Task");
+    public ScheduledTask(String deviceName, String roomName, String actionName, String hour, String minute, String repeatdays) {
+        super(deviceName, roomName, actionName, "Scheduled Tasks");
         this.hour = hour;
         this.minute = minute;
         this.repeatdays = repeatdays;

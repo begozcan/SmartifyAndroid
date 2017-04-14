@@ -4,8 +4,8 @@ public class ConditionalTask extends Task {
     private String sensorType;
     private String threshold;
 
-    public ConditionalTask(String deviceName, String actionName, String sensorType, String threshold) {
-        super(deviceName, actionName, "Conditional Task");
+    public ConditionalTask(String deviceName, String roomName, String actionName, String sensorType, String threshold) {
+        super(deviceName, roomName, actionName, "Conditional Task");
         this.sensorType = sensorType;
         this.threshold = threshold;
     }
