@@ -48,6 +48,7 @@ public class AddScheduleFragment extends Fragment {
     private String action;
     private List<Device> devices = new ArrayList<Device>();
     private List<String> actions = new ArrayList<String>();
+    private String currentRoom;
 
     private Spinner devicesSpinner;
     private Spinner actionSpinner;
@@ -159,6 +160,7 @@ public class AddScheduleFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {
                     deviceId = position - 1;
+                    currentRoom = devices.get(deviceId).getRoom();
                 } else if (position == 0) {
                     deviceId = -1;
                 }
@@ -323,13 +325,14 @@ public class AddScheduleFragment extends Fragment {
         new GetUpdatesAsyncTask(AddScheduleFragment.this).execute(pairs);
 
         String[] times = time.split(":");
-        pairs = new Pair[6];
+        pairs = new Pair[7];
         pairs[0] = new Pair<>("type", "Scheduled Task");
         pairs[1] = new Pair<>("device_name", deviceId);
-        pairs[2] = new Pair<>("action_name", actionName);
-        pairs[3] = new Pair<>("hour", times[0]);
-        pairs[4] = new Pair<>("minute", times[1]);
-        pairs[5] = new Pair<>("repeatdays", Arrays.toString(week));
+        pairs[2] = new Pair<>("room_name", currentRoom);
+        pairs[3] = new Pair<>("action_name", actionName);
+        pairs[4] = new Pair<>("hour", times[0]);
+        pairs[5] = new Pair<>("minute", times[1]);
+        pairs[6] = new Pair<>("repeatdays", Arrays.toString(week));
         new TaskAsyncTask(getContext(), "tasks_add").execute(pairs);
     }
 

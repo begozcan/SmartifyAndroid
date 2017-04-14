@@ -35,9 +35,9 @@ public class Tasks {
             try {
                 JSONArray arr = new JSONArray(deviceSharedPref.getString(key, ""));
                 if (arr.getString(1).equals("Conditional Task"))
-                    tasks.add(new ConditionalTask(arr.getString(2), arr.getString(3), arr.getString(4), arr.getString(5)));
+                    tasks.add(new ConditionalTask(arr.getString(2), arr.getString(3), arr.getString(4), arr.getString(5), arr.getString(6)));
                 else
-                    tasks.add(new ScheduledTask(arr.getString(2), arr.getString(3), arr.getString(4), arr.getString(5), arr.getString(6)));
+                    tasks.add(new ScheduledTask(arr.getString(2), arr.getString(3), arr.getString(4), arr.getString(5), arr.getString(6), arr.getString(7)));
 
             } catch (JSONException e) {
                 e.printStackTrace();

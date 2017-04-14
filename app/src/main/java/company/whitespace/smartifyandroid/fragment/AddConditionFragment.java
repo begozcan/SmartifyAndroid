@@ -49,6 +49,7 @@ public class AddConditionFragment extends Fragment {
     private Spinner conditionSpinner;
     private EditText value;
     private Button submit;
+    private String currentRoom;
 
     private OnFragmentInteractionListener mListener;
 
@@ -112,6 +113,7 @@ public class AddConditionFragment extends Fragment {
              public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                  if (position > 0) {
                      deviceId = position - 1;
+                     currentRoom = devices.get(deviceId).getRoom();
                  }
                  else if (position == 0) {
                      deviceId = -1;
@@ -267,12 +269,13 @@ public class AddConditionFragment extends Fragment {
         Log.i("Message", message.toString());
         new GetUpdatesAsyncTask(AddConditionFragment.this).execute(pairs);
 
-        pairs = new Pair[5];
+        pairs = new Pair[6];
         pairs[0] = new Pair<>("type", "Conditional Task");
         pairs[1] = new Pair<>("device_name", deviceId);
-        pairs[2] = new Pair<>("action_name", actionName);
-        pairs[3] = new Pair<>("sensor_type", conditionType);
-        pairs[4] = new Pair<>("threshold", value);
+        pairs[2] = new Pair<>("room_name", currentRoom);
+        pairs[3] = new Pair<>("action_name", actionName);
+        pairs[4] = new Pair<>("sensor_type", conditionType);
+        pairs[5] = new Pair<>("threshold", value);
         new TaskAsyncTask(getContext(), "tasks_add").execute(pairs);
     }
 

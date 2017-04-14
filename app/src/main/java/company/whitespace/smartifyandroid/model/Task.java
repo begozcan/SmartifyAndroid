@@ -5,11 +5,13 @@ package company.whitespace.smartifyandroid.model;
  */
 public abstract class Task {
     private String deviceName;
+    private String roomName;
     private String actionName;
     private String type;
 
-    public Task(String deviceName, String actionName, String type) {
+    public Task(String deviceName, String roomName, String actionName, String type) {
         this.deviceName = deviceName;
+        this.roomName = roomName;
         this.actionName = actionName;
         this.type = type;
     }
@@ -36,5 +38,13 @@ public abstract class Task {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 }
