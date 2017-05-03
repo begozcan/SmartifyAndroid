@@ -32,7 +32,7 @@ import org.json.JSONObject;
  */
 public class AddDeviceFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
-    private static final String[] types = {"Select type...", "AC Plug Unit", "Sensor Unit", "Universal Remote Unit", "Radiator Control Unit"};
+    private static final String[] types = {"Select type...", "AC Plug Unit", "Sensor Unit", "Universal Remote Unit", "Radiator Control Unit", "Pet Feeder Unit"};
 
     private OnFragmentInteractionListener mListener;
     //private final FragmentManager fragmentManager;

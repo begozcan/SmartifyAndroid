@@ -57,6 +57,7 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
+     *
      * @return A new instance of fragment ControlDeviceFragment.
      */
     // TODO: Rename and change types and number of parameters
@@ -66,11 +67,10 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
 //        //fragment.setArguments(args);
 //        return fragment;
 //    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        devices  = getDevices(getContext());
+        devices = getDevices(getContext());
         deviceId = -1;
     }
 
@@ -103,7 +103,7 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
 
         Bundle bundle = this.getArguments();
 
-        if(bundle != null){
+        if (bundle != null) {
             deviceId = Integer.parseInt(bundle.getString("device_id"));
         }
 
@@ -179,7 +179,7 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
     public List<String> toStringList(List list) {
         List<String> stringList = new ArrayList<String>();
 
-        for (int i = 0; i < list.size() ; i++) {
+        for (int i = 0; i < list.size(); i++) {
             stringList.add(list.get(i).toString());
         }
 
@@ -203,8 +203,7 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
 //                angleSubmit.setVisibility(View.VISIBLE);
                 angleButtons.setVisibility(View.VISIBLE);
                 powerButton.setVisibility(View.INVISIBLE);
-            }
-            else {
+            } else {
 //                angle.setVisibility(View.GONE);
 //                angleSubmit.setVisibility(View.GONE);
                 angleButtons.setVisibility(View.GONE);
@@ -215,8 +214,7 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
                 remoteButtons.setVisibility(View.VISIBLE);
             else
                 remoteButtons.setVisibility(View.INVISIBLE);
-        }
-        else {
+        } else {
 //            angle.setVisibility(View.GONE);
 //            angleSubmit.setVisibility(View.GONE);
             angleButtons.setVisibility(View.GONE);
@@ -287,8 +285,9 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
                     case R.id.power_button:
                         if (devices.get(deviceId).getType().equals("Universal Remote Unit")) {
                             sendToServer("infra", "p");
-                        }
-                        else {
+                        } else if (devices.get(deviceId).getType().equals("Pet Feeder Unit")) {
+                            sendToServer("pet", "p");
+                        } else {
                             sendToServer("ac", "p");
                         }
                         break;
@@ -346,7 +345,7 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
                         screen.setText(channelNo);
                         break;
 
-            }
+                }
         }
     }
 }
