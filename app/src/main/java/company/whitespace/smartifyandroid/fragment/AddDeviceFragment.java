@@ -136,13 +136,13 @@ public class AddDeviceFragment extends Fragment implements AdapterView.OnItemSel
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        type = position;
-        if (type == 3){
-            configButton.setVisibility(View.VISIBLE);
-        }
-        else{
-            configButton.setVisibility(View.GONE);
-        }
+        //type = position;
+        //if (type == 3){
+        //    configButton.setVisibility(View.VISIBLE);
+        //}
+        //else{
+        //    configButton.setVisibility(View.GONE);
+        //}
     }
 
     @Override

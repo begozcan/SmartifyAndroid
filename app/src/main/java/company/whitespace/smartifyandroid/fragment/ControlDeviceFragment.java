@@ -124,8 +124,6 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 angleValue = i;
-                // Showing selected angle value
-                Toast.makeText(getContext(), "Selected: " + i, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -256,6 +254,7 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
 
         Pair<String, String>[] pairs = new Pair[1];
         pairs[0] = new Pair<>("message", message.toString());
+        Log.d("CD", message.toString());
         new GetUpdatesAsyncTask(getContext(), "messages").execute(pairs);
 
     }
@@ -280,7 +279,7 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
                 switch (view.getId()) {
                     case R.id.angle_submit:
                         //TODO: Send to server
-
+                        sendToServer("rad", Integer.toString(angleValue));
                         break;
                     case R.id.power_button:
                         if (devices.get(deviceId).getType().equals("Universal Remote Unit")) {

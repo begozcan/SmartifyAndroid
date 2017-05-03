@@ -191,7 +191,7 @@ public class AddConditionFragment extends Fragment {
                 String conditionValue = value.getText().toString();
                 if (deviceId != -1 && !conditionValue.isEmpty() && condition != null && !condition.isEmpty() &&
                         action != null && !action.isEmpty())
-                    sendToServer(condition, conditionValue, devices.get(deviceId).getName(), action);
+                    sendToServer(condition, conditionValue, devices.get(deviceId).getType(), action);
             }
         });
 
@@ -199,17 +199,18 @@ public class AddConditionFragment extends Fragment {
             devicesSpinner.setSelection(deviceId + 1);
         }
         else if (taskId != -1) {
-            deviceId = devices_str.indexOf(tasks.get(taskId).getDeviceName());
+            ConditionalTask task = (ConditionalTask) tasks.get(taskId);
+            deviceId = devices_str.indexOf(task.getDeviceName() + " @ " + task.getRoomName());
             Log.d("ADD CONDITION", String.valueOf(deviceId));
-            devicesSpinner.setSelection(deviceId);
+            devicesSpinner.setSelection(deviceId + 1);
 
             action = tasks.get(taskId).getActionName();
-            actionSpinner.setSelection(actions.indexOf(tasks.get(taskId).getActionName()));
+            actionSpinner.setSelection(actions.indexOf(task.getActionName()));
 
-            condition = ((ConditionalTask) tasks.get(taskId)).getSensorType();
-            conditionSpinner.setSelection(conditions.indexOf(((ConditionalTask) tasks.get(taskId)).getSensorType()));
+            condition = task.getSensorType();
+            conditionSpinner.setSelection(conditions.indexOf(condition));
 
-            value.setText(((ConditionalTask) tasks.get(taskId)).getThreshold());
+            value.setText(task.getThreshold());
         }
 
         return view;
