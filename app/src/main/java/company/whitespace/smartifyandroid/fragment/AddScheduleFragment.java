@@ -210,9 +210,9 @@ public class AddScheduleFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String timeValue = time.getText().toString();
-                if (deviceId != -1 && timeValue.isEmpty() && week != null && 
+                if (deviceId != -1 && !timeValue.isEmpty() && week != null &&
                         action != null && !action.isEmpty())
-                sendToServer(timeValue, week, devices.get(deviceId).getName(), action);
+                sendToServer(timeValue, week, devices.get(deviceId).getType(), action);
             }
         });
 
@@ -235,7 +235,7 @@ public class AddScheduleFragment extends Fragment {
         }
         else if (taskId != -1) {
             ScheduledTask task = (ScheduledTask) tasks.get(taskId);
-            deviceId = devices_str.indexOf(task.getDeviceName());
+            deviceId = devices_str.indexOf(task.getDeviceName() + " @ " + task.getRoomName());
             Log.d("ADD CONDITION", String.valueOf(deviceId));
             devicesSpinner.setSelection(deviceId);
 
