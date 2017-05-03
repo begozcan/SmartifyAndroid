@@ -191,7 +191,7 @@ public class AddConditionFragment extends Fragment {
                 String conditionValue = value.getText().toString();
                 if (deviceId != -1 && !conditionValue.isEmpty() && condition != null && !condition.isEmpty() &&
                         action != null && !action.isEmpty())
-                    sendToServer(condition, conditionValue, devices.get(deviceId).getName(), action);
+                    sendToServer(condition, conditionValue, devices.get(deviceId).getType(), action);
             }
         });
 

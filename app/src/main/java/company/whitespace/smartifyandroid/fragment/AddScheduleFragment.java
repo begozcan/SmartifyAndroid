@@ -212,7 +212,7 @@ public class AddScheduleFragment extends Fragment {
                 String timeValue = time.getText().toString();
                 if (deviceId != -1 && !timeValue.isEmpty() && week != null &&
                         action != null && !action.isEmpty())
-                sendToServer(timeValue, week, devices.get(deviceId).getName(), action);
+                sendToServer(timeValue, week, devices.get(deviceId).getType(), action);
             }
         });
 
