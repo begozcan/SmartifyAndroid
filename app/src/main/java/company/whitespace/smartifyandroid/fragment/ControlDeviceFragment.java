@@ -198,42 +198,28 @@ public class ControlDeviceFragment extends Fragment implements AdapterView.OnIte
         deviceId = position - 1;
         Log.d("DEVICE_ID", String.valueOf(deviceId));
         String item = parent.getItemAtPosition(position).toString();
-        if (position > 0) {
-            // Showing selected spinner item
-            //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
 
+        powerButton.setVisibility(View.GONE);
+        angleButtons.setVisibility(View.GONE);
+        remoteButtons.setVisibility(View.GONE);
+        foodButton.setVisibility(View.GONE);
+        waterButton.setVisibility(View.GONE);
+
+        if (position > 0) {
             if (devices.get(deviceId).getType().equals("Radiator Control Unit")) {
-//                angle.setVisibility(View.VISIBLE);
-//                angleSubmit.setVisibility(View.VISIBLE);
                 angleButtons.setVisibility(View.VISIBLE);
-                powerButton.setVisibility(View.INVISIBLE);
-            } else {
-//                angle.setVisibility(View.GONE);
-//                angleSubmit.setVisibility(View.GONE);
-                angleButtons.setVisibility(View.GONE);
+            }
+            else if (devices.get(deviceId).getType().equals("Universal Remote Unit")) {
+                remoteButtons.setVisibility(View.VISIBLE);
                 powerButton.setVisibility(View.VISIBLE);
             }
-
-            if (devices.get(deviceId).getType().equals("Universal Remote Unit"))
-                remoteButtons.setVisibility(View.VISIBLE);
-            else
-                remoteButtons.setVisibility(View.INVISIBLE);
-
-            if (devices.get(deviceId).getType().equals("Pet Feeder Unit")){
+            else if (devices.get(deviceId).getType().equals("Pet Feeder Unit")){
                 foodButton.setVisibility(View.VISIBLE);
                 waterButton.setVisibility(View.VISIBLE);
-                powerButton.setVisibility(View.GONE);
-            }else{
-                foodButton.setVisibility(View.GONE);
-                waterButton.setVisibility(View.GONE);
+            }
+            else{
                 powerButton.setVisibility(View.VISIBLE);
             }
-        } else {
-//            angle.setVisibility(View.GONE);
-//            angleSubmit.setVisibility(View.GONE);
-            angleButtons.setVisibility(View.GONE);
-            powerButton.setVisibility(View.INVISIBLE);
-            remoteButtons.setVisibility(View.INVISIBLE);
         }
     }
 

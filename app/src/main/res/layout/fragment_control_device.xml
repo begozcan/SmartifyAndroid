@@ -34,7 +34,8 @@
                 android:id="@+id/angle"
                 style="@style/Widget.AppCompat.SeekBar.Discrete"
                 android:max="5"
-                android:progress="0"/>
+                android:progress="0"
+                android:layout_marginBottom="20dp"/>
 
         <Button
                 android:id="@+id/angle_submit"
@@ -59,26 +60,35 @@
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"/>
 
-    <Button
-            android:id="@+id/food_button"
-            android:layout_width="150dp"
+    <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableBottom="@drawable/ic_power"
-            android:gravity="center_vertical|center_horizontal"
-            android:text="Food"
-            android:drawablePadding="5dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp" android:visibility="gone"/>
-    <Button
-            android:id="@+id/water_button"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:drawableBottom="@drawable/ic_power"
-            android:gravity="center_vertical|center_horizontal"
-            android:text="Water"
-            android:drawablePadding="5dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp" android:visibility="gone"/>
+            android:orientation="horizontal"
+            android:gravity="center">
+
+        <Button
+                android:id="@+id/food_button"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:drawableBottom="@drawable/ic_food"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="Food"
+                android:drawablePadding="5dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp" android:visibility="gone"/>
+        <Button
+                android:id="@+id/water_button"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:drawableBottom="@drawable/ic_water"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="Water"
+                android:drawablePadding="5dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp" android:visibility="gone"/>
+    </LinearLayout>
+
+
     <LinearLayout
             android:id="@+id/remote_buttons"
             android:layout_width="match_parent"
