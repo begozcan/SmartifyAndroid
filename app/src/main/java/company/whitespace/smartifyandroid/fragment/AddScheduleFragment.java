@@ -210,7 +210,7 @@ public class AddScheduleFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String timeValue = time.getText().toString();
-                if (deviceId != -1 && !timeValue.isEmpty() && week != null &&
+                if (deviceId != -1 && ! timeValue.isEmpty() && week != null &&
                         action != null && !action.isEmpty())
                 sendToServer(timeValue, week, devices.get(deviceId).getType(), action);
             }
